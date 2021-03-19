@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "savingsaccounts", schema = "project1")
+@Table(name = "savingsaccounts")
 public class SavingsAccount extends Account {
 	@Column(nullable = false, columnDefinition = "numeric(2,2) default 50.00")
 	private double intrest;

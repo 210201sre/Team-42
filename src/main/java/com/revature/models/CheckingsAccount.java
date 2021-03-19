@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "checkingaccounts", schema = "project1")
+@Table(name = "checkingaccounts")
 public class CheckingsAccount extends Account {
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER, mappedBy = "cAccounts")
 	@JsonBackReference

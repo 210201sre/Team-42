@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "employee_data", schema = "project1")
+@Table(name = "employee_data")
 public class Employee extends Person {
 	protected Date dateHired;
 	@Column(nullable = false, columnDefinition = "numeric(16,2) default 50000.00")

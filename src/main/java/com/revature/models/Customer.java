@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "customer_data", schema = "project1")
+@Table(name = "customer_data")
 public class Customer extends Person {
 	private Date dateJoined;
 
