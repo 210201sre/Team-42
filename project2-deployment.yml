@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project2
+  namespace: team42
+  labels:
+    app: project2
+spec:
+  selector:
+    matchLabels:
+      app: project2
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: project2
+    spec:
+      volumes:
+      - name: config
+        configMap:
+          name: fluent-conf
+      containers:
+      - name: fluentd
+        ports:
+        - containerPort: 24224
+        image: grafana/fluent-plugin-loki:latest
+        env:
+        - name: LOKI_URL
+          value: http://loki:3100
+        volumeMounts:
+        - name: config
+          mountPath: /fluentd/etc/fluent.conf
+          subPath: fluent.conf
+      - name: project2
+        ports:
+        - containerPort: 8090
+        image: revteam42/project2:latest
+        env:
+        - name: DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: team42-credantials
+              key: url
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: team42-credantials
+              key: password
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: team42-credantials
+              key: username
+
+
+
+
