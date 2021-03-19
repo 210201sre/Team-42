@@ -51,7 +51,7 @@ public class UserService {
 		MDC.put("event", "Salary");
 		Set<User> users = this.findAll();
 		Set<User> returnusers = new HashSet<>();
-		for(User u: users) {
+		for(User u : users) {
 			if(u.isEmployee()) {
 				if(u.getCAccounts() != null) {
 					u.getCAccounts()

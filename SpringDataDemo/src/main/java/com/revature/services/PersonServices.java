@@ -72,9 +72,9 @@ public class PersonServices {
 		e.setDateHired(temp);
 		Employee eTemp = employeeDAO.save(e);
 		Optional<User> opUser = userDAO.findById(id);
-		User aUser = opUser.get();
-		aUser.setEmployee_data(eTemp);
-		userDAO.save(aUser);
+		User u = opUser.get();
+		u.setEmployee_data(eTemp);
+		userDAO.save(u);
 		log.info("employee info added");
 		MDC.clear();
 		return eTemp;
