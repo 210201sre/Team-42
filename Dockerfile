@@ -16,7 +16,7 @@ FROM java:8 as runner
 EXPOSE 8090
 
 # Copy the jar file from our previous stage
-COPY --from=builder target/spring-data-demo-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=builder target/team42-0.1.jar app.jar
 
 # Run our program
 ENTRYPOINT [ "java", "-jar", "app.jar" ]
