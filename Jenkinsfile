@@ -3,8 +3,8 @@ pipeline {
     agent any
     environment {
         // Can declare different environment variables to be used specifically within this pipeline
-        DOCKER_IMAGE_NAME = 'ikenoxamos/project1'
-        MAVEN_IMAGE_NAME = 'log-aggregation-demo:0.0.1-SNAPSHOT'
+        DOCKER_IMAGE_NAME = 'revteam42/project2'
+        MAVEN_IMAGE_NAME = 'team42:0.1'
     }
 
     stages {
