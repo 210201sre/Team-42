@@ -15,7 +15,7 @@
 	<name>team42</name>
 	<description>Team42 project for Spring Boot</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
