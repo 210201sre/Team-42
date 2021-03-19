@@ -1,4 +1,4 @@
-ipeline {
+pipeline {
   // Authors: Justin Caabera, Matthew Howard, Ernest Kim, Jonathan Nunez
   agent {
     kubernetes {
