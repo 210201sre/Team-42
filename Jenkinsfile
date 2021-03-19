@@ -70,7 +70,7 @@ pipeline {
     stage('Push Docker Image') {
       steps {
         script {
-          docker.withRegistry('https://registry.hub.docker.com', 'docker-blockbuster-token') {
+          docker.withRegistry('https://registry.hub.docker.com', 'team42') {
             app.push('latest')
             app.push("${env.BUILD_NUMBER}")
             app.push("${env.GIT_COMMIT}")
