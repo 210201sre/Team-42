@@ -65,7 +65,7 @@ pipeline {
         sh 'docker images'
       }
     }
-    }
+    
 
     stage('Push Docker Image') {
       steps {
@@ -91,5 +91,5 @@ pipeline {
         }
       }
     }
-	}
-  }
+}
+}
