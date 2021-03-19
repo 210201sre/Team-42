@@ -23,16 +23,17 @@ import com.revature.services.UserService;
 @RequestMapping("/users")
 public class UserController {
 
-	@Autowired
-	private UserService userService;
-
+	/*fields*/
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
+	@Autowired private UserService userService;
+
+	/*GET methods*/
 	@GetMapping
 	public ResponseEntity<Set<User>> findAll() {
 		MDC.put("event", "find all users");
+		
 		Set<User> allUsers = userService.findAll();
-
 		if (allUsers.isEmpty()) {
 			log.warn("no users found :(");
 			MDC.clear();
@@ -47,13 +48,20 @@ public class UserController {
 	@GetMapping("/{userid}")
 	public ResponseEntity<User> findByUsername(@PathVariable("userid") int id) {
 		MDC.put("event", "find all user by id");
+		
 		User user = userService.findById(id);
+		
 		MDC.put("user id", user.getId());
 		log.info("users found");
 		MDC.clear();
+		
 		return ResponseEntity.ok(user);
 	}
 
+	
+	/*POST methods*/
+
+	
 	@PostMapping
 	public ResponseEntity<User> insert(@Valid @RequestBody User u) {
 		return ResponseEntity.ok(userService.insert(u));
@@ -67,7 +75,6 @@ public class UserController {
 		if (allUsers.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		}
-
 		return ResponseEntity.ok(allUsers);
 	}
 }

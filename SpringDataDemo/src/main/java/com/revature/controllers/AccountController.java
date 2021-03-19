@@ -23,16 +23,18 @@ import com.revature.services.AccountServices;
 
 @RestController
 public class AccountController {
+	
+	/*fields*/
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-	@Autowired
-	private AccountServices accountServices;
+	@Autowired private AccountServices accountServices;
 
+	/*GET methods*/
 	@GetMapping("/checkings_accounts")
 	public ResponseEntity<Set<CheckingsAccount>> findAllCheckings() {
 		MDC.put("event", "find all checkings account");
+		
 		Set<CheckingsAccount> allCAcounts = accountServices.findAllCheckingsAccounts();
-
 		if (allCAcounts.isEmpty()) {
 			log.warn("accounts not found");
 			MDC.clear();
@@ -42,21 +44,18 @@ public class AccountController {
 		MDC.clear();
 		return ResponseEntity.ok(allCAcounts);
 	}
-
-	@PostMapping("/checkings_accounts/{id}")
-	public ResponseEntity<CheckingsAccount> insert(@Valid @RequestBody CheckingsAccount cA,
-			@PathVariable("id") int id) {
-		return ResponseEntity.ok(accountServices.insert(cA, id));
-
-	}
-
+	
 	@GetMapping("/checkings_accounts/{id}")
 	public ResponseEntity<CheckingsAccount> findCheckingsAccountsById(@PathVariable("id") int id) {
 		MDC.put("event", "find checkings account by id");
 		MDC.put("accountid", id);
+		
 		CheckingsAccount account = accountServices.findCheckingsAccountsById(id);
-		if (account == null)
+		if (account == null) {
 			log.warn("account not found");
+			MDC.clear();
+			return ResponseEntity.noContent().build();
+		}
 		log.info("account found");
 		MDC.clear();
 		return ResponseEntity.ok(account);
@@ -68,8 +67,11 @@ public class AccountController {
 		MDC.put("accountid", id);
 
 		SavingsAccount account = accountServices.findSavingssAccountsById(id);
-		if (account == null)
+		if (account == null) {
 			log.warn("account not found");
+			MDC.clear();
+			return ResponseEntity.noContent().build();
+		}
 		log.info("account found");
 		MDC.clear();
 		return ResponseEntity.ok(account);
@@ -90,30 +92,37 @@ public class AccountController {
 		return ResponseEntity.ok(allSAcounts);
 	}
 
+	/*POST mapping*/
+	@PostMapping("/checkings_accounts/{id}")
+	public ResponseEntity<CheckingsAccount> insert(@Valid @RequestBody CheckingsAccount cA,
+			@PathVariable("id") int id) {
+		return ResponseEntity.ok(accountServices.insert(cA, id));
+
+	}
+
 	@PostMapping("/savings_accounts/{id}")
-	public ResponseEntity<SavingsAccount> insert(@Valid @RequestBody SavingsAccount sA, @PathVariable("id") int id) {
+	public ResponseEntity<SavingsAccount> insert(@Valid @RequestBody SavingsAccount sA, 
+			@PathVariable("id") int id) {
 		return ResponseEntity.ok(accountServices.insert(sA, id));
 
 	}
 
 	@PostMapping("/accounts/transfer/{id1}/{id2}/{amount}")
-	public ResponseEntity<Set<Account>> transfer(@PathVariable("id1") int id1, @PathVariable("id2") int id2,
-			@PathVariable("amount") double amount) {
+	public ResponseEntity<Set<Account>> transfer(@PathVariable("id1") int id1, 
+			@PathVariable("id2") int id2, @PathVariable("amount") double amount) {
+		
 		Set<Account> allAcounts = accountServices.transfer(id1, id2, amount);
-
 		if (allAcounts.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		}
-
 		return ResponseEntity.ok(allAcounts);
-
 	}
 
 	@PostMapping("/accounts/acess/{actid}/{userid}")
-	public ResponseEntity<User> grantAccess(@PathVariable("actid") int actId, @PathVariable("userid") int userId) {
+	public ResponseEntity<User> grantAccess(@PathVariable("actid") int actId, 
+			@PathVariable("userid") int userId) {
 		User u = accountServices.grantAccessToUser(actId, userId);
 		return ResponseEntity.ok(u);
-
 	}
 
 }

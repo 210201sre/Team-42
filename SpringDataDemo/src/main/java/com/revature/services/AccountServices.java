@@ -24,38 +24,30 @@ import com.revature.models.User;
 import com.revature.repositories.CheckingsAccountDAO;
 import com.revature.repositories.SavingsAccountDAO;
 import com.revature.repositories.UserDAO;
+
 @Service
 public class AccountServices {
 
-	@Autowired
-	private SavingsAccountDAO savingsAccountDAO;
-	@Autowired
-	private CheckingsAccountDAO checkingsAccountDAO;
-	@Autowired
-	private UserDAO userDAO;
-
+	/*fields*/
 	private static final Logger log=LoggerFactory.getLogger(UserController.class);
 	
-	public Set<CheckingsAccount> findAllCheckingsAccounts() {
-		return checkingsAccountDAO.findAll().stream().collect(Collectors.toSet());
-	}
+	@Autowired private SavingsAccountDAO savingsAccountDAO;
+	@Autowired private CheckingsAccountDAO checkingsAccountDAO;
+	@Autowired private UserDAO userDAO;
 
-	public CheckingsAccount findCheckingsAccountsById(int id) {
-		return checkingsAccountDAO.findById(id).orElseThrow(() -> new UserNotFoundException("No Employee found with id " + id));
-	}
-
+	/*Create methods*/
 	public CheckingsAccount insert(CheckingsAccount e, int id) {
-		Optional<User> oU = userDAO.findById(id);
-		User u = oU.get();
+
 		MDC.put("event", "make account");
 		MDC.put("userid", id);
 		MDC.put("accountid", e.getId());
-		if(e.getU()==null)
-		{
-			List<User> users=new ArrayList<>();
+		
+		Optional<User> anOptionalUser = userDAO.findById(id);
+		User u = anOptionalUser.get();
+		if(e.getU() == null){
+			List<User> users = new ArrayList<>();
 			users.add(u);
 			e.setU(users);
-			
 		}
 		else e.getU().add(u);
 		CheckingsAccount cATemp = checkingsAccountDAO.save(e);
@@ -66,29 +58,13 @@ public class AccountServices {
 		MDC.clear();
 		return cATemp;
 	}
-	
-	public Set<SavingsAccount> findAllSavingsAccounts() {
-		MDC.put("event", "make account");
-		log.info("found all savings accounts");
-		MDC.clear();
-		return savingsAccountDAO.findAll().stream().collect(Collectors.toSet());
-	}
-
-	public SavingsAccount findSavingssAccountsById(int id) {
-		MDC.put("event", "find account by id");
-		MDC.put("Account Id", id);
-		log.info("found savings account with id");
-		MDC.clear();
-		return savingsAccountDAO.findById(id).orElseThrow(() -> new UserNotFoundException("No Employee found with id " + id));
-	}
-
 	public SavingsAccount insert(SavingsAccount e, int id) {
 		Optional<User> oU = userDAO.findById(id);
 		User u = oU.get();
 		MDC.put("event", "make account");
 		MDC.put("userid", id);
 		MDC.put("accountid", e.getId());
-		if(e.getU()==null)
+		if(e.getU( )== null)
 		{
 			List<User> users=new ArrayList<>();
 			users.add(u);
@@ -104,33 +80,59 @@ public class AccountServices {
 		MDC.clear();
 		return cATemp;
 	}
+	
+	/*Read methods*/
+	public Set<CheckingsAccount> findAllCheckingsAccounts() {
+		return checkingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+	}
 
+	public CheckingsAccount findCheckingsAccountsById(int id) {
+		return checkingsAccountDAO.findById(id).orElseThrow(() -> 
+				new UserNotFoundException("No Employee found with id " + id));
+	}
+
+	public Set<SavingsAccount> findAllSavingsAccounts() {
+		MDC.put("event", "make account");
+		log.info("found all savings accounts");
+		MDC.clear();
+		return savingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+	}
+
+	public SavingsAccount findSavingssAccountsById(int id) {
+		MDC.put("event", "find account by id");
+		MDC.put("Account Id", id);
+		log.info("found savings account with id");
+		MDC.clear();
+		return savingsAccountDAO.findById(id).orElseThrow(() -> new UserNotFoundException("No Employee found with id " + id));
+	}
+
+	/*Update methods*/
 	public Set<Account> transfer(int id1, int id2, double amount) {
-		Account account1=null;
-		Account account2=null;
+		Account account1 = null;
+		Account account2 = null;
 		
 		MDC.put("event", "Grant Acess");
 		MDC.put("Account_Id_1", id1);
 		MDC.put("Account_id_2", id2);
 		MDC.put("Amount", amount);
 		
-		Set<SavingsAccount> tempSAccounts=new HashSet<>();
-		tempSAccounts=savingsAccountDAO.findAll().stream().collect(Collectors.toSet());
-		Set<CheckingsAccount> tempCAccounts=new HashSet<>();
-		tempCAccounts=checkingsAccountDAO.findAll().stream().collect(Collectors.toSet());
-		Set<Account> accounts=new HashSet<>();
+		Set<SavingsAccount> tempSAccounts = new HashSet<>();
+		tempSAccounts = savingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+		Set<CheckingsAccount> tempCAccounts = new HashSet<>();
+		tempCAccounts = checkingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+		Set<Account> accounts = new HashSet<>();
 		accounts.addAll(tempCAccounts);
 		accounts.addAll(tempSAccounts);
 		
-		for(Account account : accounts)
-		{
-			if(account.getId()==id1)
-				account1=account;
-			if(account.getId()==id2)
-				account2=account;
+		for(Account account : accounts){
+			if(account.getId()==id1) {
+				account1 = account;
+			}
+			if(account.getId()==id2) {
+				account2 = account;
+			}
 		}
-		if(account1==null || account2==null)
-		{
+		if(account1 == null || account2 == null){
 			log.warn("account not found");
 			MDC.clear();
 			return null;
@@ -138,44 +140,50 @@ public class AccountServices {
 		account1.setBalance(account1.getBalance()-amount);
 		account2.setBalance(account2.getBalance()+amount);
 
-		if(account1 instanceof SavingsAccount)
+		if(account1 instanceof SavingsAccount) {
 			savingsAccountDAO.save((SavingsAccount) account1);
-		else checkingsAccountDAO.save((CheckingsAccount) account1);
-		if(account2 instanceof SavingsAccount)
+		} else {
+			checkingsAccountDAO.save((CheckingsAccount) account1);
+		}
+		if(account2 instanceof SavingsAccount) {
 			savingsAccountDAO.save((SavingsAccount) account2);
-		else checkingsAccountDAO.save((CheckingsAccount) account2);
-		
-		Set<Account> returnaccounts=new HashSet<>();
+		} else {
+			checkingsAccountDAO.save((CheckingsAccount) account2);
+		}
+		Set<Account> returnaccounts = new HashSet<>();
 		returnaccounts.add(account1);
 		returnaccounts.add(account2);
 		
 		log.info("founds transfered");
 		MDC.clear();
 		return returnaccounts;
-		
 	}
-	
+
+	/*Delete methods*/
+
+	/*other methods*/
 	public User grantAccessToUser(int actId,int userId) {
 		MDC.put("event", "Grant Acess");
 		MDC.put("Account Id", actId);
 		MDC.put("User Id", userId);
-		User u=userDAO.findById(userId).get();
-		Account account1=null;
-		Set<SavingsAccount> tempSAccounts=new HashSet<>();
-		tempSAccounts=savingsAccountDAO.findAll().stream().collect(Collectors.toSet());
-		Set<CheckingsAccount> tempCAccounts=new HashSet<>();
-		tempCAccounts=checkingsAccountDAO.findAll().stream().collect(Collectors.toSet());
-		Set<Account> accounts=new HashSet<>();
+		
+		User u = userDAO.findById(userId).get();
+		Account account1 = null;
+		Set<SavingsAccount> tempSAccounts = new HashSet<>();
+		tempSAccounts = savingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+		Set<CheckingsAccount> tempCAccounts = new HashSet<>();
+		tempCAccounts = checkingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+		Set<Account> accounts = new HashSet<>();
 		accounts.addAll(tempCAccounts);
 		accounts.addAll(tempSAccounts);
 		
-		for(Account account : accounts)
-		{
-			if(account.getId()==actId)
+		for(Account account : accounts){
+			if(account.getId() == actId) {
 				account1=account;
+			}
 		}
 		
-		if(account1==null) {
+		if(account1 == null) {
 			log.warn("account not found");
 			MDC.clear();
 			return null;
@@ -185,16 +193,12 @@ public class AccountServices {
 			u.getSAccounts().add((SavingsAccount)account1);
 			((SavingsAccount) account1).getU().add(u);
 			savingsAccountDAO.save((SavingsAccount)account1);
-		}
-		else {
+		} else {
 			u.getCAccounts().add((CheckingsAccount)account1);
 			((CheckingsAccount) account1).getU().add(u);
 			checkingsAccountDAO.save((CheckingsAccount)account1);
-		
 		}
 		log.info("access granted");
 		return u;
-		
 	}
-
 }

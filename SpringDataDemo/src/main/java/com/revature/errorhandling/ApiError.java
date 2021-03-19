@@ -22,7 +22,8 @@ import lombok.Data;
  */
 @Data
 public class ApiError {
-
+	
+	/*fields*/
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
 	private LocalDateTime timestamp;
 
@@ -32,9 +33,12 @@ public class ApiError {
 	// The HTTP Error
 
 	private String message;
+	
 	private String debugMessage;
+	
 	List<ApiSubError> subErrors = new ArrayList<>();
-
+	
+	/*constructors*/
 	private ApiError() {
 		super();
 		timestamp = LocalDateTime.now();
@@ -45,11 +49,7 @@ public class ApiError {
 		this.status = status.value();
 		this.error = status.getReasonPhrase();
 	}
-
-	public int getStatus() {
-		return status;
-	}
-
+	
 	public ApiError(HttpStatus status, Throwable ex) {
 		this(status);
 		this.message = "No message available";
@@ -60,8 +60,21 @@ public class ApiError {
 		this(status, ex);
 		this.message = message;
 	}
+		/*getters*/
+	public int getStatus() {
+		return status;
+	}
 
+	/*setters*/
+	
+
+	/*functional methods*/
 	public void addSubError(ApiSubError error) {
 		this.subErrors.add(error);
 	}
+
+	/*Object class overrides*/
+	
+
+
 }

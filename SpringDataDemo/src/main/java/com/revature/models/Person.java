@@ -11,73 +11,88 @@ import javax.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Person {
+
+	/*fields*/
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(nullable = false, unique = true, updatable = false)
 	protected int id;
+	
 	protected String firstName;
+	
 	protected String lastName;
+	
 	protected String zipcode;
+	
 	protected String city;
+	
 	protected String streetAdress;
+	
 	protected String state;
 
+	/*constructors*/
+	
+	/*getters*/
 	public int getId() {
 		return id;
 	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
+	
 	public String getFirstName() {
 		return firstName;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public String getZipcode() {
+		return zipcode;
+	}
+	
+	public String getCity() {
+		return city;
+	}
+	
+	public String getStreetAdress() {
+		return streetAdress;
+	}
+	
+	public String getState() {
+		return state;
+	}	
+
+	/*setters*/
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
-	public String getLastName() {
-		return lastName;
-	}
-
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	public String getZipcode() {
-		return zipcode;
 	}
 
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
 	}
 
-	public String getCity() {
-		return city;
-	}
-
 	public void setCity(String city) {
 		this.city = city;
-	}
-
-	public String getStreetAdress() {
-		return streetAdress;
 	}
 
 	public void setStreetAdress(String streetAdress) {
 		this.streetAdress = streetAdress;
 	}
 
-	public String getState() {
-		return state;
-	}
-
 	public void setState(String state) {
 		this.state = state;
 	}
 
+	/*functional methods*/
+	
+	/*Object class overrides*/
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -94,45 +109,58 @@ public abstract class Person {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
+		}
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Person other = (Person) obj;
 		if (city == null) {
-			if (other.city != null)
+			if (other.city != null) {
 				return false;
-		} else if (!city.equals(other.city))
+			}
+		} else if (!city.equals(other.city)) {
 			return false;
+		}
 		if (firstName == null) {
-			if (other.firstName != null)
+			if (other.firstName != null) {
 				return false;
-		} else if (!firstName.equals(other.firstName))
+			}
+		} else if (!firstName.equals(other.firstName)) {
 			return false;
-		if (id != other.id)
+		}
+		if (id != other.id) {
 			return false;
+		}
 		if (lastName == null) {
-			if (other.lastName != null)
+			if (other.lastName != null) {
 				return false;
-		} else if (!lastName.equals(other.lastName))
+			}
+		} else if (!lastName.equals(other.lastName)) {
 			return false;
+		}
 		if (state == null) {
-			if (other.state != null)
+			if (other.state != null) {
 				return false;
-		} else if (!state.equals(other.state))
+			}
+		} else if (!state.equals(other.state)) {
 			return false;
+		}
 		if (streetAdress == null) {
-			if (other.streetAdress != null)
+			if (other.streetAdress != null) {
 				return false;
+			}
 		} else if (!streetAdress.equals(other.streetAdress))
 			return false;
 		if (zipcode == null) {
-			if (other.zipcode != null)
+			if (other.zipcode != null) {
 				return false;
-		} else if (!zipcode.equals(other.zipcode))
+			}
+		} else if (!zipcode.equals(other.zipcode)) {
 			return false;
+		}
 		return true;
 	}
 

@@ -13,7 +13,26 @@ import javax.persistence.Inheritance;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Account {
-
+	/*fields*/
+	
+	/*constructors*/
+	
+	/*getters*/
+	
+	/*setters*/
+	
+	/*functional methods*/
+	
+	/*Object class overrides*/
+	
+	/*CRUD methods*/
+	
+	/*non-CRUD methods*/
+	
+	/*GET methods*/
+	
+	/*POST methods*/
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "Account_id", nullable = false, unique = true, updatable = false)

@@ -13,18 +13,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "checkingaccounts", schema = "project1")
 public class CheckingsAccount extends Account {
+
+	/*fields*/
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER, mappedBy = "cAccounts")
 	@JsonBackReference
 	protected List<User> u;
-
-	public List<User> getU() {
-		return u;
-	}
-
-	public void setU(List<User> u) {
-		this.u = u;
-	}
-
+	
+	/*constructors*/
 	public CheckingsAccount(int id, double balance) {
 		super();
 		super.id = id;
@@ -34,7 +29,20 @@ public class CheckingsAccount extends Account {
 	public CheckingsAccount() {
 		super();
 	}
+	
+	/*getters*/
+	public List<User> getU() {
+		return u;
+	}
 
+	/*setters*/
+	public void setU(List<User> u) {
+		this.u = u;
+	}
+	
+	/*functional methods*/
+	
+	/*Object class overrides*/
 	@Override
 	public String toString() {
 		return "CheckingsAccount [id=" + id + ", balance=" + balance + "]";
@@ -54,18 +62,22 @@ public class CheckingsAccount extends Account {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		CheckingsAccount other = (CheckingsAccount) obj;
-		if (Double.doubleToLongBits(balance) != Double.doubleToLongBits(other.balance))
+		if (Double.doubleToLongBits(balance) != Double.doubleToLongBits(other.balance)) {
 			return false;
-		if (id != other.id)
+		}
+		if (id != other.id) {
 			return false;
+		}
 		return true;
 	}
-
 }

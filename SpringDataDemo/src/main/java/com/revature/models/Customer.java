@@ -9,8 +9,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "customer_data", schema = "project1")
 public class Customer extends Person {
+
+	/*fields*/
 	private Date dateJoined;
 
+	/*constructors*/
 	public Customer(int id, Date dateJoined, String firstname, String lastname, String zipcode, String city,
 			String streetAdress, String state) {
 		super();
@@ -38,15 +41,20 @@ public class Customer extends Person {
 		super.state = e.getState();
 		dateJoined = e.getDateHired();
 	}
-
+	
+	/*getters*/
 	public Date getDateJoined() {
 		return dateJoined;
 	}
 
+	/*setters*/
 	public void setDateJoined(Date dateJoined) {
 		this.dateJoined = dateJoined;
 	}
 
+	/*functional methods*/
+	
+	/*Object class overrides*/
 	@Override
 	public String toString() {
 		return "Customer [dateJoined=" + dateJoined + ", id=" + id + ", firstName=" + firstName + ", lastName="
@@ -64,16 +72,20 @@ public class Customer extends Person {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Customer other = (Customer) obj;
 		if (dateJoined == null) {
-			if (other.dateJoined != null)
+			if (other.dateJoined != null) {
 				return false;
+			}
 		} else if (!dateJoined.equals(other.dateJoined))
 			return false;
 		return true;

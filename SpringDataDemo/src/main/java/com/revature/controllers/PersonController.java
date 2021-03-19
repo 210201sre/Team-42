@@ -22,17 +22,19 @@ import com.revature.services.PersonServices;
 
 @RestController
 public class PersonController {
-
+	
+	/*fields*/
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-	@Autowired
-	private PersonServices personServices;
-
+	@Autowired private PersonServices personServices;
+		
+	/*GET methods*/
+	
 	@GetMapping("/customers")
 	public ResponseEntity<Set<Customer>> findAllCustomers() {
 		MDC.put("event", "find all customers");
+		
 		Set<Customer> allCustomers = personServices.findAllCustomers();
-
 		if (allCustomers.isEmpty()) {
 			log.warn("no customers found");
 			MDC.clear();
@@ -48,7 +50,6 @@ public class PersonController {
 		MDC.put("event", "find all employee");
 
 		Set<Employee> allEmployees = personServices.findAllEmployees();
-
 		if (allEmployees.isEmpty()) {
 			log.warn("no employees found");
 			MDC.clear();
@@ -58,7 +59,8 @@ public class PersonController {
 		MDC.clear();
 		return ResponseEntity.ok(allEmployees);
 	}
-
+	
+	/*POST methods*/
 	@PostMapping("/employees/{id}")
 	public ResponseEntity<Employee> insert(@Valid @RequestBody Employee e, @PathVariable("id") int id) {
 		return ResponseEntity.ok(personServices.insert(e, id));

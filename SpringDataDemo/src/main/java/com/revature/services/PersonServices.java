@@ -23,15 +23,64 @@ import com.revature.repositories.UserDAO;
 @Service
 public class PersonServices {
 
-	private static final Logger log=LoggerFactory.getLogger(UserController.class);
+	/*fields*/
+	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 	
-	@Autowired
-	private EmployeeDAO employeeDAO;
-	@Autowired
-	private CustomerDAO customerDAO;
-	@Autowired
-	private UserDAO userDAO;
+	@Autowired private EmployeeDAO employeeDAO;
 	
+	@Autowired private CustomerDAO customerDAO;
+	
+	@Autowired private UserDAO userDAO;
+	
+	/*constructors*/
+	/*getters*/
+	
+	/*setters*/
+	
+
+	/*Create methods*/
+	/**
+	 * used to insert a customer int the customer_data table of the project1 DB
+	 * @param c an instance of the 
+	 * @param id
+	 * @return
+	 */
+	public Customer insert(Customer c, int id) {
+		
+		MDC.put("event", "insert customer");
+		MDC.put("userid", id);
+		MDC.put("employeeid", c.getId());
+		
+		Date temp = new Date(System.currentTimeMillis());
+		c.setDateJoined(temp);
+		Customer cTemp = customerDAO.save(c);
+		Optional<User> oU = userDAO.findById(id);
+		User u = oU.get();
+		u.setCustomer_data(cTemp);
+		userDAO.save(u);
+		log.info("customer info added");
+		MDC.clear();
+		return cTemp;
+	}
+	
+	public Employee insert(Employee e, int id) {
+		MDC.put("event", "insert employee");
+		MDC.put("userid", id);
+		MDC.put("employeeid", e.getId());
+		
+		Date temp = new Date(System.currentTimeMillis());
+		e.setDateHired(temp);
+		Employee eTemp = employeeDAO.save(e);
+		Optional<User> opUser = userDAO.findById(id);
+		User aUser = opUser.get();
+		aUser.setEmployee_data(eTemp);
+		userDAO.save(aUser);
+		log.info("employee info added");
+		MDC.clear();
+		return eTemp;
+	}
+	
+	/*Read methods*/
 	public Set<Employee> findAllEmployees() {
 		return employeeDAO.findAll()
 				.stream()
@@ -42,25 +91,6 @@ public class PersonServices {
 		return employeeDAO.findById(id)
 				.orElseThrow( () -> new UserNotFoundException("No Employee found with id " + id));
 	}
-	
-	public Employee insert(Employee e, int id) {
-		MDC.put("event", "insert employee");
-		MDC.put("userid", id);
-		MDC.put("employeeid", e.getId());
-		
-		Date temp=new Date(System.currentTimeMillis());
-		e.setDateHired(temp);
-		Employee eTemp=employeeDAO.save(e);
-		Optional<User> oU=userDAO.findById(id);
-		User u=oU.get();
-		u.setEmployee_data(eTemp);
-		userDAO.save(u);
-		log.info("employee info added");
-		MDC.clear();
-		return eTemp;
-	}
-	
-
 	
 	public Set<Customer> findAllCustomers() {
 		return customerDAO.findAll()
@@ -73,22 +103,18 @@ public class PersonServices {
 				.orElseThrow( () -> new UserNotFoundException("No Employee found with id " + id));
 	}
 	
-	public Customer insert(Customer c, int id) {
-		
-		MDC.put("event", "insert customer");
-		MDC.put("userid", id);
-		MDC.put("employeeid", c.getId());
-		
-		Date temp=new Date(System.currentTimeMillis());
-		c.setDateJoined(temp);
-		Customer cTemp=customerDAO.save(c);
-		Optional<User> oU=userDAO.findById(id);
-		User u=oU.get();
-		u.setCustomer_data(cTemp);
-		userDAO.save(u);
-		log.info("customer info added");
-		MDC.clear();
-		return cTemp;
-	}
 	
+	/*Update methods*/
+	
+	/*Delete methods*/
+	
+	
+	
+	
+
+	
+
+	
+	
+		
 }

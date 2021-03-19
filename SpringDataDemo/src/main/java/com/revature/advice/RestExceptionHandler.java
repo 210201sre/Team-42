@@ -20,12 +20,14 @@ import com.revature.exceptions.UserNotFoundException;
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+	/*fields*/
 	private static final Logger log = LoggerFactory.getLogger(RestExceptionHandler.class);
 
+	/*methods*/
 	private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
 		return ResponseEntity.status(apiError.getStatus()).body(apiError);
 	}
-
+	
 	/*
 	 * Intercepts exceptions that caused by Invalid JSON
 	 * 
@@ -79,3 +81,4 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, error, ex));
 	}
 }
+	

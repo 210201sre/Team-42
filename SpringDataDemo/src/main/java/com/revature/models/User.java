@@ -29,28 +29,51 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+
+	/*fields*/
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id", nullable = false, unique = true, updatable = false)
 	private int id;
-
+	
 	@Length(min = 5)
 	@NotBlank
 	@Pattern(regexp = "[a-zA-Z][a-zA-Z0-9]*")
 	private String username;
+	
 	@Length(min = 4)
 	@NotBlank
 	private String password;
+	
 	private boolean employee;
+	/*
+	 * TODO: by convention booleans should be a verb phrase, consider 
+	 * renaming to 'isEmployee' or 'hasEmployee'
+	 */ 
+	
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<CheckingsAccount> cAccounts;
+	
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<SavingsAccount> sAccounts;
+	
 	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	private Employee employee_data;
+	
 	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	private Customer customer_data;
-
-}
+	
+	/*constructors*/
+	//see class annotations
+	
+	/*getters*/
+	
+	/*setters*/
+	
+	/*functional methods*/
+	
+	/*Object class overrides*/
+	
+	}

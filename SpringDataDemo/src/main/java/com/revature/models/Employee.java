@@ -10,10 +10,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "employee_data", schema = "project1")
 public class Employee extends Person {
+
+	/*fields*/
 	protected Date dateHired;
+
 	@Column(nullable = false, columnDefinition = "numeric(16,2) default 50000.00")
 	protected double salary;
-
+	
+	/*constructors*/
 	public Employee(int id, Date dateHired, double salary, String firstname, String lastname, String zipcode,
 			String city, String streetAdress, String state) {
 		super();
@@ -44,22 +48,27 @@ public class Employee extends Person {
 		super();
 	}
 
+	/*getters*/
 	public Date getDateHired() {
 		return dateHired;
-	}
-
-	public void setDateHired(Date temp) {
-		this.dateHired = temp;
 	}
 
 	public double getSalary() {
 		return salary;
 	}
 
+	/*setters*/
+	public void setDateHired(Date temp) {
+		this.dateHired = temp;
+	}
+
 	public void setSalary(double salary) {
 		this.salary = salary;
 	}
-
+	
+	/*functional methods*/
+	
+	/*Object class overrides*/
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -73,20 +82,25 @@ public class Employee extends Person {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Employee other = (Employee) obj;
 		if (dateHired == null) {
-			if (other.dateHired != null)
+			if (other.dateHired != null) {
 				return false;
+			}
 		} else if (!dateHired.equals(other.dateHired))
 			return false;
-		if (Double.doubleToLongBits(salary) != Double.doubleToLongBits(other.salary))
+		if (Double.doubleToLongBits(salary) != Double.doubleToLongBits(other.salary)) {
 			return false;
+		}
 		return true;
 	}
 

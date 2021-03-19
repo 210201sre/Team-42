@@ -18,12 +18,18 @@ import com.revature.repositories.UserDAO;
 
 @Service
 public class UserService {
-
-	@Autowired
-	private UserDAO userDAO;
 	
+	/*fields*/
 	private static final Logger log=LoggerFactory.getLogger(UserController.class);
 	
+	@Autowired private UserDAO userDAO;
+	
+	/*Create methods*/
+	public User insert(User u) {
+		return userDAO.save(u);
+	}
+	
+	/*Read methods*/
 	public Set<User> findAll() {
 		return userDAO.findAll()
 				.stream()
@@ -36,34 +42,39 @@ public class UserService {
 	}
 	
 	public User findByUsername(String username) {
-		return userDAO.findByUsername(username)
-				.orElseThrow( () -> new UserNotFoundException("No user found with username " + username));
+		return userDAO.findByUsername(username).orElseThrow( () -> 
+				new UserNotFoundException("No user found with username " + username));
 	}
 	
-	public User insert(User u) {
-		return userDAO.save(u);
-	}
-	
+	/*Update methods*/
 	public Set<User> paySalary() {
 		MDC.put("event", "Salary");
-		Set<User> users=this.findAll();
-		Set<User> returnusers=new HashSet<>();
+		Set<User> users = this.findAll();
+		Set<User> returnusers = new HashSet<>();
 		for(User u: users) {
-			if(u.isEmployee())
-			{
-				if(u.getCAccounts()!=null) {
-					u.getCAccounts().get(0).setBalance(u.getCAccounts().get(0).getBalance()+(u.getEmployee_data().getSalary()/24));
+			if(u.isEmployee()) {
+				if(u.getCAccounts() != null) {
+					u.getCAccounts()
+							.get(0).setBalance(u
+									.getCAccounts()
+									.get(0).getBalance()+(u.getEmployee_data().getSalary()/24));
 					returnusers.add(u);
 					userDAO.save(u);
 				}
-					
 			}
 		}
 		log.info("salary paid");
 		MDC.clear();
 		return returnusers;
-		
 	}
-	
-	
+	/*Delete methods*/
 }
+
+	
+	
+	
+	
+	
+	
+	
+	
