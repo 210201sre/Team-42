@@ -86,7 +86,7 @@ pipeline {
             withKubeConfig([credentialsId: 'kubeconfig']) {
               sh "aws eks update-kubeconfig --name matt-oberlies-sre-943"
               sh 'kubectl get pods -n team42'
-			  sh 'kubectl apply project2-deployment.yml'
+			  sh 'kubectl apply -f project2-deployment.yml'
 			  sh 'kubectl get pods -n team42'
             }
           }
