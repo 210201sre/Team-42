@@ -87,8 +87,8 @@ pipeline {
               sh "aws eks update-kubeconfig --name matt-oberlies-sre-943"
               sh 'kubectl get pods -n team42'
 			 // sh 'kubectl patch deployment project2 -n team42 -p "{"spec":{"template":{"spec":{"containers":[{"name":"project2","image":"$DOCKER_IMAGE_NAME"}]}}}}"'
-       sh 'kubectl update deployment set image $IMAGE_NAME'
-			  sh 'kubectl get pods -n team42'
+              sh 'kubectl set image -n team42 deployment project2 project2=revteam42/project2'
+			        sh 'kubectl get pods -n team42'
             }
           }
         }
