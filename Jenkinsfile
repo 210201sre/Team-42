@@ -88,6 +88,7 @@ pipeline {
               sh 'kubectl get pods -n team42'
 			 // sh 'kubectl patch deployment project2 -n team42 -p "{"spec":{"template":{"spec":{"containers":[{"name":"project2","image":"$DOCKER_IMAGE_NAME"}]}}}}"'
               sh 'kubectl set image -n team42 deployment project2 project2=revteam42/project2'
+              sh 'kubectl get secret grafana -o jsonpath="{ .data.admin-password }" | base64 --decode'
 			        sh 'kubectl get pods -n team42'
             }
           }
