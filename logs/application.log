@@ -22,3 +22,6 @@
 2021-03-22 14:08:15.339 []  INFO 15784 --- [           main] c.r.SpringDataDemoApplicationTests       : Starting SpringDataDemoApplicationTests using Java 11.0.6 on MSI with PID 15784 (started by rober in C:\Users\rober\Documents\Revature\210201sre\Team42\Team-42)
 2021-03-22 14:08:17.381 []  INFO 15784 --- [           main] c.r.SpringDataDemoApplicationTests       : No active profile set, falling back to default profiles: default
 2021-03-22 14:08:27.042 []  INFO 15784 --- [           main] c.r.SpringDataDemoApplicationTests       : Started SpringDataDemoApplicationTests in 14.238 seconds (JVM running for 17.04)
+2021-03-22 14:49:47.169 []  INFO 30500 --- [           main] c.r.SpringDataDemoApplicationTests       : Starting SpringDataDemoApplicationTests using Java 11.0.6 on MSI with PID 30500 (started by rober in C:\Users\rober\Documents\Revature\210201sre\Team42\Team-42)
+2021-03-22 14:49:49.205 []  INFO 30500 --- [           main] c.r.SpringDataDemoApplicationTests       : No active profile set, falling back to default profiles: default
+2021-03-22 14:49:57.256 []  INFO 30500 --- [           main] c.r.SpringDataDemoApplicationTests       : Started SpringDataDemoApplicationTests in 12.68 seconds (JVM running for 15.079)
