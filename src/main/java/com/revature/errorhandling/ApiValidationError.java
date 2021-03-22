@@ -10,7 +10,7 @@ public class ApiValidationError extends ApiSubError {
 	private String object; // The type
 	private String field; // The field name
 	private Object rejectedValue; // The particular value
-	private String message; // The reason
+	private String message; 
 
 	public ApiValidationError(String object, String message) {
 		this.object = object;
