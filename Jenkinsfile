@@ -70,7 +70,7 @@ pipeline {
       steps {
         sh 'java -version'
         sh 'chmod +x mvnw'
-        withSonarQubeEnv(credentialsId: '42 acess', installationName: 'sonarcloud') {
+        withSonarQubeEnv(credentialsId: 'sonar-token-42', installationName: 'sonarcloud') {
           sh './mvnw -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar'
         }
       }
