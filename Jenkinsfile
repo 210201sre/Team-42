@@ -94,10 +94,11 @@ pipeline {
           container('kubectl') {
             withKubeConfig([credentialsId: 'kubeconfig']) {
               sh "aws eks update-kubeconfig --name matt-oberlies-sre-943"
-              sh 'kubectl get deployments -n team42'
+              sh 'kubectl get all -n team42'
 			        // sh 'kubectl patch deployment project2 -n team42 -p "{"spec":{"template":{"spec":{"containers":[{"name":"project2","image":"$DOCKER_IMAGE_NAME"}]}}}}"'
-              sh 'kubectl set image -n team42 deployment project2 project2=revteam42/project2'
-			        sh 'kubectl get pods -n team42'
+              sh 'kubectl set image -n team42 deployment project2 project2=$DOCKER_IMAGE_NAME'
+              sh 'sleep 5s'
+			        sh 'kubectl get all -n team42'
             }
           }
         }
