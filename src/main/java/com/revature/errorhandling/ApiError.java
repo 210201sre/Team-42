@@ -10,16 +10,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
-/**
- * This class does not represent Error, as in the subclass of Throwable. Instead
- * it represents the information about an HTTP Error
- * 
- * The structure of this class can be serialized into JSON and sent back to
- * inform the client about what went wrong
- * 
- * @author MatthewOberlies
- *
- */
 @Data
 public class ApiError {
 
@@ -29,7 +19,6 @@ public class ApiError {
 	private int status;
 
 	private String error;
-	// The HTTP Error
 
 	private String message;
 	private String debugMessage;

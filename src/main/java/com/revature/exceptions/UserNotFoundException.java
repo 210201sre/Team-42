@@ -2,9 +2,6 @@ package com.revature.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6085523359730828557L;
 
 	public UserNotFoundException() {
