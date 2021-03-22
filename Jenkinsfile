@@ -56,28 +56,6 @@ pipeline {
   }
 
   stages {
-    stage('Build') {
-      steps {
-        sh 'docker build -t $DOCKER_IMAGE_NAME .'
-        script {
-          app = docker.image(DOCKER_IMAGE_NAME)
-        }
-        sh 'docker images'
-      }
-    }
-    
-
-    stage('Push Docker Image') {
-      steps {
-        script {
-          docker.withRegistry('https://registry.hub.docker.com', 'team42') {
-            app.push('latest')
-            app.push("${env.BUILD_NUMBER}")
-            app.push("${env.GIT_COMMIT}")
-          }
-        }
-      }
-    }
 
     stage('kuberneties') {
       steps{
@@ -87,7 +65,7 @@ pipeline {
               sh "aws eks update-kubeconfig --name matt-oberlies-sre-943"
               sh 'kubectl get pods -n team42'
 			 // sh 'kubectl patch deployment project2 -n team42 -p "{"spec":{"template":{"spec":{"containers":[{"name":"project2","image":"$DOCKER_IMAGE_NAME"}]}}}}"'
-              sh 'kubectl set image -n team42 deployment project2 project2=revteam42/project2'
+              //sh 'kubectl set image -n team42 deployment project2 project2=revteam42/project2'
               sh 'kubectl get secret grafana -o jsonpath="{ .data.admin-password }" | base64 --decode'
 			        sh 'kubectl get pods -n team42'
             }
