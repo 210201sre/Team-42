@@ -56,8 +56,6 @@ pipeline {
   }
 
   stages {
-<<<<<<< HEAD
-=======
     stage('Build') {
       steps {
         sh 'docker build -t $DOCKER_IMAGE_NAME .'
@@ -81,7 +79,6 @@ pipeline {
       }
     }
 
->>>>>>> parent of 82c35b3 (Update Jenkinsfile)
     stage('kuberneties') {
       steps{
         script {
