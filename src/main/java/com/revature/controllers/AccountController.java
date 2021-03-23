@@ -21,10 +21,15 @@ import com.revature.models.CheckingsAccount;
 import com.revature.models.User;
 import com.revature.services.AccountServices;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+
 @RestController
 public class AccountController {
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
-
+	private MeterRegistry meterRegistry;
+	private Counter successCounter = this.meterRegistry.counter("transfer_success_counter");
+	
 	@Autowired
 	private AccountServices accountServices;
 
@@ -104,7 +109,8 @@ public class AccountController {
 		if (allAcounts.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		}
-
+		
+		successCounter.increment();
 		return ResponseEntity.ok(allAcounts);
 
 	}
