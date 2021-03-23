@@ -10,4 +10,4 @@ spec:
     matchLabels:
       app: project2
   endpoints:
-  - port: 8090
+  - port: http
