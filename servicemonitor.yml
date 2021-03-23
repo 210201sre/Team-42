@@ -1,0 +1,13 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: project2
+  namespace: team42
+  labels:
+    team: team42
+spec:
+  selector:
+    matchLabels:
+      app: project2
+  endpoints:
+  - port: http
