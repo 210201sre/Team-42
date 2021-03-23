@@ -4,16 +4,10 @@ metadata:
   name: project2
   namespace: team42
   labels:
-    release: prometheus
     team: team42
 spec:
   selector:
     matchLabels:
       app: project2
-  namespaceSelector:
-    matchNames: 
-    - team42
   endpoints:
   - port: http
-    path: /actuator/prometheus
-    interval: 10s
