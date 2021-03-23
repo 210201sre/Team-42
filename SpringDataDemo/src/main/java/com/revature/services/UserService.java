@@ -65,5 +65,8 @@ public class UserService {
 		
 	}
 	
+	public void delete(User u) {
+		userDAO.delete(u);
+	}
 	
 }

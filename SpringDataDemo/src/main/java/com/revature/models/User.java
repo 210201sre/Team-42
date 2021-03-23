@@ -52,5 +52,72 @@ public class User {
 	private Employee employee_data;
 	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	private Customer customer_data;
+	
+	/*getters*/
+	public int getId() {
+		return id;
+	}
+	
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	public List<CheckingsAccount> getCAccounts() {
+		return cAccounts;
+	}
+	public List<SavingsAccount> getSAccounts() {
+		return sAccounts;
+	}
+	public Employee getEmployee_data() {
+		return employee_data;
+	}
+	public Customer getCustomer_data() {
+		return customer_data;
+	}
+	
+	public boolean isEmployee() {
+		return employee;
+	}
+	
+	/*settes*/
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public void setCAccounts(List<CheckingsAccount> cAccounts) {
+		this.cAccounts = cAccounts;
+	}
+	
+	public void setSAccounts(List<SavingsAccount> sAccounts) {
+		this.sAccounts = sAccounts;
+	}
+	
+	public void setEmployee_data(Employee employee_data) {
+		this.employee_data = employee_data;
+	}
+	
+	
+	public void setCustomer_data(Customer customer_data) {
+		this.customer_data = customer_data;
+	}
 
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public void setEmployee(boolean employee) {
+		this.employee = employee;
+	}
+	
+	
+	
+	
 }
