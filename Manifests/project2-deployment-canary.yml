@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: project2
+  name: project2-canary
   namespace: team42
   labels:
     app: project2
@@ -9,13 +9,13 @@ spec:
   selector:
     matchLabels:
       app: project2
-      track: stable
-  replicas: 3
+      track: canary
+  replicas: 0
   template:
     metadata:
       labels:
         app: project2
-        track: stab
+        track: canary
     spec:
       volumes:
       - name: config

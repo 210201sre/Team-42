@@ -88,14 +88,32 @@ pipeline {
       }
     }
 
-    stage('kuberneties') {
+
+    stage('kuberneties canary deployment') {
       steps{
         script {
           container('kubectl') {
             withKubeConfig([credentialsId: 'kubeconfig']) {
               sh "aws eks update-kubeconfig --name matt-oberlies-sre-943"
               sh 'kubectl get all -n team42'
-			        // sh 'kubectl patch deployment project2 -n team42 -p "{"spec":{"template":{"spec":{"containers":[{"name":"project2","image":"$DOCKER_IMAGE_NAME"}]}}}}"'
+              sh 'kubectl scale deployment project2-canary --replicas=1 -n team42'
+              sh 'sleep 5s'
+			        sh 'kubectl get all -n team42'
+            }
+          }
+        }
+      }
+    }
+
+    stage('kuberneties production deployment') {
+      steps{
+        script {
+          container('kubectl') {
+            withKubeConfig([credentialsId: 'kubeconfig']) {
+              sh "aws eks update-kubeconfig --name matt-oberlies-sre-943"
+              sh 'kubectl get all -n team42'
+              input 'Deploy to Production?'
+               sh 'kubectl scale deployment project2-canary --replicas=0 -n team42'
               sh 'kubectl set image -n team42 deployment project2 project2=$DOCKER_IMAGE_NAME'
               sh 'sleep 5s'
 			        sh 'kubectl get all -n team42'
