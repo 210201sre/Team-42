@@ -54,6 +54,7 @@ public class PersonServices {
 		Optional<User> oU=userDAO.findById(id);
 		User u=oU.get();
 		u.setEmployee_data(eTemp);
+		u.setEmployee(true); //added to set user's employee value to true to ensure user data is updated
 		userDAO.save(u);
 		log.info("employee info added");
 		MDC.clear();

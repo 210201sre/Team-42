@@ -67,7 +67,7 @@ public class AccountController {
 		MDC.put("event", "find savings account by id");
 		MDC.put("accountid", id);
 
-		SavingsAccount account = accountServices.findSavingssAccountsById(id);
+		SavingsAccount account = accountServices.findSavingsAccountsById(id);
 		if (account == null)
 			log.warn("account not found");
 		log.info("account found");
