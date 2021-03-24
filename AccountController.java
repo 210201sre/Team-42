@@ -28,7 +28,12 @@ import io.micrometer.core.instrument.MeterRegistry;
 public class AccountController {
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 	private MeterRegistry meterRegistry;
-	private Counter successCounter = this.meterRegistry.counter("transfer_success_counter");
+	private Counter successCounter;
+	
+	public AccountController (MeterRegistry meterRegistry) {
+		this.meterRegistry = meterRegistry;
+        successCounter = meterRegistry.counter("accessed account", "type", "success");
+	}
 	
 	@Autowired
 	private AccountServices accountServices;
@@ -110,7 +115,6 @@ public class AccountController {
 			return ResponseEntity.noContent().build();
 		}
 		
-		successCounter.increment();
 		return ResponseEntity.ok(allAcounts);
 
 	}
@@ -118,6 +122,7 @@ public class AccountController {
 	@PostMapping("/accounts/acess/{actid}/{userid}")
 	public ResponseEntity<User> grantAccess(@PathVariable("actid") int actId, @PathVariable("userid") int userId) {
 		User u = accountServices.grantAccessToUser(actId, userId);
+		successCounter.increment(1);
 		return ResponseEntity.ok(u);
 
 	}
