@@ -15,7 +15,7 @@ spec:
     metadata:
       labels:
         app: project2
-        track: stab
+        track: stable
     spec:
       volumes:
       - name: config
@@ -46,7 +46,7 @@ spec:
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: team42-credantials
+              name:  
               key: password
         - name: DB_USERNAME
           valueFrom:
