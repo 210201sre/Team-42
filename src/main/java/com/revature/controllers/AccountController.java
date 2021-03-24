@@ -24,13 +24,15 @@ import com.revature.services.AccountServices;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import io.micrometer.prometheus.PrometheusConfig;
+import io.micrometer.prometheus.PrometheusMeterRegistry;
 
 @RestController
 public class AccountController {
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 	
-	SimpleMeterRegistry oneSimpleMeter = new SimpleMeterRegistry();
-	private Counter successCounter = this.oneSimpleMeter.counter("transfer_success_counter");
+	PrometheusMeterRegistry prometheusRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+	private Counter successCounter = this.prometheusRegistry.counter("transfer_success_counter");
 	
 	@Autowired
 	private AccountServices accountServices;
