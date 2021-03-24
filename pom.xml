@@ -118,7 +118,6 @@
 						<!-- Both the sonar configuration above, and jacoco-maven-plugin need the exclusions -->
 						<exclude>**/models/**</exclude>
 						<exclude>**/controllers/**</exclude>
-						<exclude>**/repositories/**</exclude>
 						<exclude>**/exceptions/**</exclude>
 						<exclude>**/errorhandling/**</exclude>
 						<exclude>**/advice/**</exclude>
