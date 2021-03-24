@@ -115,6 +115,8 @@ pipeline {
               input 'Deploy to Production?'
                sh 'kubectl scale deployment project2-canary --replicas=0 -n team42'
               sh 'kubectl set image -n team42 deployment project2 project2=$DOCKER_IMAGE_NAME'
+			  sh 'kubectl scale deployment project2 --replicas=1 -n team42'
+			  sh 'kubectl scale deployment project2 --replicas=3 -n team42'
 			  sh 'kubectl scale deployment project2 --replicas=2 -n team42'
 			  sh 'kubectl scale deployment project2 --replicas=3 -n team42'
               sh 'sleep 5s'
