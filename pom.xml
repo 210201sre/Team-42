@@ -25,7 +25,7 @@
 		<coverage.reports.dir>target/coverage-reports</coverage.reports.dir>
 		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		
-		<sonar.exclusions>src/**/models/**/*, src/**/controllers/**/*, src/**/repositories/**/*</sonar.exclusions>
+		<sonar.exclusions>src/**/models/**/*, src/**/controllers/**/*, src/**/repositories/**/*, src/**/errorhandling/**/*, src/**/exceptions/**/*, src/**/advice/**/*</sonar.exclusions>
 		
 	</properties>
 	<dependencies>
@@ -119,6 +119,9 @@
 						<exclude>**/models/**</exclude>
 						<exclude>**/controllers/**</exclude>
 						<exclude>**/repositories/**</exclude>
+						<exclude>**/exceptions/**</exclude>
+						<exclude>**/errorhandling/**</exclude>
+						<exclude>**/advice/**</exclude>
 					</excludes>
 				</configuration>
 				<executions>
