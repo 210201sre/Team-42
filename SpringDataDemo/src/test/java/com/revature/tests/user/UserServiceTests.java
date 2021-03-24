@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.aspectj.lang.annotation.Before;
+import org.jboss.logging.MDC;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -24,6 +26,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.revature.controllers.UserController;
+import com.revature.exceptions.UserNotFoundException;
+import com.revature.models.CheckingsAccount;
 import com.revature.models.Customer;
 import com.revature.models.Employee;
 import com.revature.models.User;
@@ -32,20 +36,22 @@ import com.revature.services.UserService;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(SpringExtension.class)
-//@SpringBootTest
 class UserServiceTests {
 	private static final Logger log=LoggerFactory.getLogger(UserController.class);
 	
 	@InjectMocks UserService service;
+	
 	@Mock UserDAO uDAO;
 	
 	@Test void findAllTest() {
-		User aUser = new User();
-		aUser.setUsername("Xargothrax");
-		aUser.setPassword("universeOnFire");	
+		int anId = 4200;
+		Optional<User> aUser;
+		aUser = Optional.of(new User());
+		aUser.get().setUsername("Xargothrax");
+		aUser.get().setPassword("universeOnFire");	
+		aUser.get().setId(anId);
 		List<User> resultList = new ArrayList<User>();
-		resultList.add(aUser);
-		
+		resultList.add(aUser.get());
 		Mockito.when(uDAO.findAll()).thenReturn(resultList);
 	
 		Set<User> resultSet = service.findAll();
@@ -53,76 +59,72 @@ class UserServiceTests {
 		assert(!resultSet.isEmpty());
 	}
 	
-//	@Test void testInsert() {
-//		User testUser = new User();
-//		testUser.setUsername("zargothrax");
-//		testUser.setPassword("1324");
-//		
-//		//check if test user already exists
-//		Set<User> userSet = service.findAll();
-//		for (User aUser : userSet) {
-//			if (aUser.getUsername() == testUser.getUsername()) {
-//				fail("username exists before insert");
-//			}
-//		}
-//		
-//		//check if insert worked
-//		service.insert(testUser);
-//		userSet = service.findAll();
-//		boolean found = false;
-//		for (User aUser : userSet) {
-//			if (aUser.getUsername() == testUser.getUsername()) {
-//				log.warn("\naUser: " + aUser.getUsername() + ".	 testUser: " + testUser.getUsername() + ".");
-//				found = true;
-//				break;
-//			}
-//			//fail("failed to insert testUser");
-//		}
-//		
-//		//check if deletion worked
-//		service.delete(testUser);
-//		userSet = service.findAll();
-//		boolean deleted = false;
-//		for (User aUser : userSet) {
-//			if (aUser.getUsername() == testUser.getUsername()) {
-//				fail("username not deleted");
-//				break;
-//			}
-//			deleted = true;
-//		}
-//		log.info("\nfound: " + found + "\ndeleted: " + deleted);
-//		assert (found && deleted);
-//	}
-//	
-//	 @Test void testPaySalary() {
-//		Set<User> userSet = service.findAll();
-//		User checkUser = null;
-//		for (User u : userSet) {
-//			if (!u.isEmployee()) {
-//				continue;
-//			} else {
-//				checkUser = u;
-//				break;
-//			}
-//		}
-//		if (checkUser == null) {
-//			fail("no employees found");
-//		}
-//		int checkUserId = checkUser.getId();
-//		double oldBalance = checkUser.getCAccounts().get(0).getBalance();
-//		
-//		service.paySalary();
-//		
-//		userSet = service.findAll();
-//		for (User u : userSet) {
-//			if (u.getId() == checkUserId) {
-//				checkUser = u;
-//				break;
-//			}
-//		}
-//		assert(oldBalance + checkUser.getEmployee_data().getSalary()/24 == 
-//				checkUser.getCAccounts().get(0).getBalance() );
-//	}
-//	
+	@Test void findByIdTest() {
+		int anId = 4200;
+		Optional<User> aUser;
+		aUser = Optional.of(new User());
+		aUser.get().setUsername("Xargothrax");
+		aUser.get().setPassword("universeOnFire");	
+		aUser.get().setId(anId);
+		Mockito.when(uDAO.findById(anId)).thenReturn(aUser);
+		User returnValue = service.findById(4200);
+		assert(returnValue.getUsername() == "Xargothrax");
+		assert(returnValue.getPassword() == "universeOnFire");
+	}
 	
+	@Test void findByUsernameTest() {
+		int anId = 4200;
+		String theUsername ="Xargothrax";
+		Optional<User> aUser;
+		aUser = Optional.of(new User());
+		aUser.get().setUsername(theUsername);
+		aUser.get().setPassword("universeOnFire");	
+		aUser.get().setId(anId);
+		Mockito.when(uDAO.findByUsername(theUsername)).thenReturn(aUser);
+		User returnValue = service.findByUsername(theUsername);
+		assert(returnValue.getUsername() == "Xargothrax");
+		assert(returnValue.getPassword() == "universeOnFire");
+	}
+	
+	@Test void insertTest() {
+		int anId = 4200;
+		String theUsername ="Xargothrax";
+		Optional<User> aUser;
+		aUser = Optional.of(new User());
+		aUser.get().setUsername(theUsername);
+		aUser.get().setPassword("universeOnFire");	
+		aUser.get().setId(anId);
+		Mockito.when(uDAO.save(aUser.get())).thenReturn(aUser.get());
+		User returnValue = service.insert(aUser.get());
+		assert(returnValue.getUsername() == "Xargothrax");
+		assert(returnValue.getPassword() == "universeOnFire");
+	}
+
+	@Test void paySalaryTest() {
+		int anId = 4200;
+		Optional<User> aUser;
+		aUser = Optional.of(new User());
+		aUser.get().setUsername("Xargothrax");
+		aUser.get().setPassword("universeOnFire");	
+		aUser.get().setId(anId);
+		
+		Employee e = new Employee();
+		e.setSalary(4000);
+		
+		aUser.get().setEmployee_data(e);
+		
+		CheckingsAccount anAccount = new CheckingsAccount();
+		anAccount.setId(anId);
+		anAccount.setBalance(234);
+		List<CheckingsAccount> accountList = new ArrayList<CheckingsAccount>();
+		accountList.add(anAccount);
+				
+		aUser.get().setCAccounts(accountList);
+		
+		List<User> resultList = new ArrayList<User>();
+		resultList.add(aUser.get());
+		
+		Set<User> returnValue = service.paySalary();
+		assert(returnValue.getCAccounts().get(0).getBalance() == 1234);
+	}
 }
