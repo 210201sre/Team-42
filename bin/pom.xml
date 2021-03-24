@@ -10,13 +10,23 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.revature</groupId>
-	<artifactId>Team42</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Team42</name>
+	<artifactId>team42</artifactId>
+	<version>0.1</version>
+	<name>team42</name>
 	<description>Team42 project for Spring Boot</description>
 	<properties>
 		<java.version>1.8</java.version>
-	
+		
+		<sonar.projectKey>210201sre_team42</sonar.projectKey>
+  		<sonar.organization>210201sre</sonar.organization>
+  		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+  		
+  		<!-- We can configure some additional properties for test coverage reports -->
+		<coverage.reports.dir>target/coverage-reports</coverage.reports.dir>
+		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+		
+		<sonar.exclusions>src/**/models/**/*, src/**/controllers/**/*, src/**/repositories/**/*</sonar.exclusions>
+		
 	</properties>
 	<dependencies>
 		<dependency>
@@ -31,7 +41,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
 		<!-- https://mvnrepository.com/artifact/org.fluentd/fluent-logger -->
 		<dependency>
 			<groupId>org.fluentd</groupId>
@@ -99,6 +108,35 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.4</version>
+				<configuration>
+					<outputDirectory>${coverage.reports.dir}</outputDirectory>
+					<excludes>
+						<!-- Both the sonar configuration above, and jacoco-maven-plugin need the exclusions -->
+						<exclude>**/models/**</exclude>
+						<exclude>**/controllers/**</exclude>
+						<exclude>**/repositories/**</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
