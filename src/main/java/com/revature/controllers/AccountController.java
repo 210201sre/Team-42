@@ -23,16 +23,17 @@ import com.revature.services.AccountServices;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
-import io.micrometer.prometheus.PrometheusConfig;
-import io.micrometer.prometheus.PrometheusMeterRegistry;
 
 @RestController
 public class AccountController {
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
+	private MeterRegistry meterRegistry;
+	private Counter successCounter;
 	
-	PrometheusMeterRegistry prometheusRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-	private Counter successCounter = this.prometheusRegistry.counter("transfer_success_counter");
+	public AccountController (MeterRegistry meterRegistry) {
+		this.meterRegistry = meterRegistry;
+        successCounter = meterRegistry.counter("accessed account", "type", "success");
+	}
 	
 	@Autowired
 	private AccountServices accountServices;
@@ -113,7 +114,7 @@ public class AccountController {
 		if (allAcounts.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		}
-
+		
 		return ResponseEntity.ok(allAcounts);
 
 	}
@@ -121,7 +122,7 @@ public class AccountController {
 	@PostMapping("/accounts/acess/{actid}/{userid}")
 	public ResponseEntity<User> grantAccess(@PathVariable("actid") int actId, @PathVariable("userid") int userId) {
 		User u = accountServices.grantAccessToUser(actId, userId);
-		successCounter.increment();
+		successCounter.increment(1);
 		return ResponseEntity.ok(u);
 
 	}
