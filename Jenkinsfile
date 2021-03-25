@@ -19,8 +19,8 @@ pipeline {
             value: tcp://localhost:2375
           resources:
             requests:
-              memory: "1000Mi"
-              cpu: "0.3"
+              memory: "1250Mi"
+              cpu: "0.9"
             limits:
               memory: "1500Mi"
               cpu: "1.5"
@@ -34,8 +34,8 @@ pipeline {
             mountPath: /var/lib/docker
           resources:
             requests:
-              memory: "1000Mi"
-              cpu: "0.3"
+              memory: "1250Mi"
+              cpu: "0.9"
             limits:
               memory: "1500Mi"
               cpu: "1.5"
@@ -67,7 +67,11 @@ pipeline {
     }
     
     stage('Sonar Quality Check') {
+		tools{
+            jdk "jdk11"
+          }
       steps {
+	  
         sh 'java -version'
         sh 'chmod +x mvnw'
         withSonarQubeEnv(credentialsId: 'sonar-token-42', installationName: 'sonarcloud') {
