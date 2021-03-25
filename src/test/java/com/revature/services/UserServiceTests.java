@@ -1,4 +1,4 @@
-package com.revature.tests.user;
+package com.revature.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -98,6 +98,39 @@ class UserServiceTests {
 //		aUser.get().getCAccounts().get(0).setBalance(aUser.get().getCAccounts().get(0).getBalance()+(aUser.get().getEmployee_data().getSalary()/24));
 		
 		assert(aUser.get().getCAccounts().get(0).getBalance() == 1234);
+	}
+	
+	@Test void paySalaryTest2() {
+		
+		System.out.println("test system out.");
+		
+		Employee e = new Employee();
+		e.setSalary(24000);
+		
+		CheckingsAccount anAccount = new CheckingsAccount();
+		anAccount.setId(4200);
+		anAccount.setBalance(234);
+		List<CheckingsAccount> accountList = new ArrayList<CheckingsAccount>();
+		accountList.add(anAccount);
+		
+		User aUser = setTestUser().get();
+		aUser.setEmployee_data(e);
+		aUser.setCAccounts(accountList);
+		
+		List<User> userSet = new ArrayList<User>();
+		userSet.add(aUser);
+		
+		Mockito.when(uDAO.findAll()).thenReturn(userSet);
+		Mockito.when(UserService.paySalary()).thenReturn(userSet);
+		Set<User> returnValue = service.paySalary();
+		List<User> returnList = new ArrayList<User>();
+		returnValue.forEach(i -> returnList.add(i));
+		for (User u : returnList) {
+			System.out.println(u.getCAccounts().get(0).getBalance());
+		}
+		
+		
+		assert(returnList.get(0).getCAccounts().get(0).getBalance() == 1234);
 	}
 	
 	private static Optional<User> setTestUser(){
