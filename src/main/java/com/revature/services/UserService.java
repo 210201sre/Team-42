@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.hibernate.exception.JDBCConnectionException;
 import org.jboss.logging.MDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,32 +17,79 @@ import com.revature.models.CheckingsAccount;
 import com.revature.models.User;
 import com.revature.repositories.UserDAO;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+
 @Service
 public class UserService {
-
+	private MeterRegistry meterRegistry;
+	private Counter successJdbcCounter;
+	private Counter jdbcCounter;
+	
+	public UserService (MeterRegistry meterRegistry) {
+		this.meterRegistry = meterRegistry;
+        successJdbcCounter = meterRegistry.counter("jdbc connected", "type", "success");;
+    	jdbcCounter = meterRegistry.counter("jdbc connected", "type", "connect");;
+	}
+	
 	@Autowired
 	private UserDAO userDAO;
 	
 	private static final Logger log=LoggerFactory.getLogger(UserController.class);
 	
 	public Set<User> findAll() {
-		return userDAO.findAll()
-				.stream()
-				.collect(Collectors.toSet());
+		Set<User> users = null;
+		jdbcCounter.increment(1);
+		try {
+			users = userDAO.findAll()
+			.stream()
+			.collect(Collectors.toSet());
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException e) {
+			log.info(e.toString());
+		}
+		return users;
 	}
 	
 	public User findById(int id) {
-		return userDAO.findById(id)
-				.orElseThrow( () -> new UserNotFoundException("No user found with id " + id));
+		User u = null;
+		jdbcCounter.increment(1);
+		try {
+			u = userDAO.findById(id)
+			.orElseThrow( () -> new UserNotFoundException("No user found with id " + id));
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException e) {
+			log.info(e.toString());
+		}
+		return u;
 	}
 	
 	public User findByUsername(String username) {
-		return userDAO.findByUsername(username)
-				.orElseThrow( () -> new UserNotFoundException("No user found with username " + username));
+		User u = null;
+		jdbcCounter.increment(1);
+		try {
+			u = userDAO.findByUsername(username)
+			.orElseThrow( () -> new UserNotFoundException("No user found with username " + username));
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException e) {
+			log.info(e.toString());
+		}
+		return u;
 	}
 	
 	public User insert(User u) {
-		return userDAO.save(u);
+		jdbcCounter.increment(1);
+		try {
+			u = userDAO.save(u);
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException e) {
+			log.info(e.toString());
+		}
+		return u;
 	}
 	
 	public Set<User> paySalary() {
@@ -54,7 +102,15 @@ public class UserService {
 				if(u.getCAccounts()!=null) {
 					u.getCAccounts().get(0).setBalance(u.getCAccounts().get(0).getBalance()+(u.getEmployee_data().getSalary()/24));
 					returnusers.add(u);
-					userDAO.save(u);
+					jdbcCounter.increment(1);
+					try {
+						userDAO.save(u);
+						successJdbcCounter.increment(1);
+					}
+					catch (JDBCConnectionException e) {
+						log.info(e.toString());
+					}
+					
 				}
 					
 			}

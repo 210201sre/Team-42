@@ -23,13 +23,15 @@ import com.revature.repositories.CustomerDAO;
 import com.revature.repositories.EmployeeDAO;
 import com.revature.repositories.UserDAO;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 @ExtendWith(MockitoExtension.class)
 public class PersonServicesTest {
 	
 	
 
 		@InjectMocks
-		PersonServices services;
+		PersonServices services = new PersonServices(new SimpleMeterRegistry());;
 
 		@Mock
 		private EmployeeDAO employeeDAO;

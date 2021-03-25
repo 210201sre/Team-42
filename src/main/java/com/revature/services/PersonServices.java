@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.hibernate.exception.JDBCConnectionException;
 import org.jboss.logging.MDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +21,22 @@ import com.revature.repositories.CustomerDAO;
 import com.revature.repositories.EmployeeDAO;
 import com.revature.repositories.UserDAO;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+
 @Service
 public class PersonServices {
 
 	private static final Logger log=LoggerFactory.getLogger(UserController.class);
+	private MeterRegistry meterRegistry;
+	private Counter successJdbcCounter;
+	private Counter jdbcCounter;
+	
+	public PersonServices (MeterRegistry meterRegistry) {
+		this.meterRegistry = meterRegistry;
+        successJdbcCounter = meterRegistry.counter("jdbc connected", "type", "success");;
+    	jdbcCounter = meterRegistry.counter("jdbc connected", "type", "connect");;
+	}
 	
 	@Autowired
 	private EmployeeDAO employeeDAO;
@@ -33,14 +46,32 @@ public class PersonServices {
 	private UserDAO userDAO;
 	
 	public Set<Employee> findAllEmployees() {
-		return employeeDAO.findAll()
-				.stream()
-				.collect(Collectors.toSet());
+		Set<Employee> eSet = null;
+		jdbcCounter.increment(1);
+		try {
+			eSet = employeeDAO.findAll()
+					.stream()
+					.collect(Collectors.toSet());
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException e) {
+			log.info(e.toString());
+		}
+		return eSet;
 	}
 	
 	public Employee findEmployeeById(int id) {
-		return employeeDAO.findById(id)
-				.orElseThrow( () -> new UserNotFoundException("No Employee found with id " + id));
+		Employee e = null;
+		jdbcCounter.increment(1);
+		try {
+			e = employeeDAO.findById(id)
+					.orElseThrow( () -> new UserNotFoundException("No Employee found with id " + id));
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
+		return e;
 	}
 	
 	public Employee insert(Employee e, int id) {
@@ -50,12 +81,35 @@ public class PersonServices {
 		
 		Date temp=new Date(System.currentTimeMillis());
 		e.setDateHired(temp);
-		Employee eTemp=employeeDAO.save(e);
-		Optional<User> oU=userDAO.findById(id);
+		Employee eTemp=e;
+		jdbcCounter.increment(1);
+		try {
+			eTemp=employeeDAO.save(e);
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
+		Optional<User> oU=null;
+		jdbcCounter.increment(1);
+		try {
+			oU=userDAO.findById(id);
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
 		User u=oU.get();
 		u.setEmployee_data(eTemp);
 		u.setEmployee(true); //added to set user's employee value to true to ensure user data is updated
-		userDAO.save(u);
+		jdbcCounter.increment(1);
+		try {
+			userDAO.save(u);
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
 		log.info("employee info added");
 		MDC.clear();
 		return eTemp;
@@ -64,14 +118,32 @@ public class PersonServices {
 
 	
 	public Set<Customer> findAllCustomers() {
-		return customerDAO.findAll()
-				.stream()
-				.collect(Collectors.toSet());
+		Set<Customer> cSet = null;
+		jdbcCounter.increment(1);
+		try {
+			cSet = customerDAO.findAll()
+					.stream()
+					.collect(Collectors.toSet());
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
+		return cSet;
 	}
 	
 	public Customer findCustomerById(int id) {
-		return customerDAO.findById(id)
-				.orElseThrow( () -> new UserNotFoundException("No Employee found with id " + id));
+		Customer c = null;
+		jdbcCounter.increment(1);
+		try {
+			c = customerDAO.findById(id)
+					.orElseThrow( () -> new UserNotFoundException("No Employee found with id " + id));
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
+		return c;
 	}
 	
 	public Customer insert(Customer c, int id) {
@@ -82,11 +154,34 @@ public class PersonServices {
 		
 		Date temp=new Date(System.currentTimeMillis());
 		c.setDateJoined(temp);
-		Customer cTemp=customerDAO.save(c);
-		Optional<User> oU=userDAO.findById(id);
+		Customer cTemp=null;
+		jdbcCounter.increment(1);
+		try {
+			cTemp=customerDAO.save(c);
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
+		Optional<User> oU=null;
+		jdbcCounter.increment(1);
+		try {
+			oU=userDAO.findById(id);
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
 		User u=oU.get();
 		u.setCustomer_data(cTemp);
-		userDAO.save(u);
+		jdbcCounter.increment(1);
+		try {
+			userDAO.save(u);
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
 		log.info("customer info added");
 		MDC.clear();
 		return cTemp;

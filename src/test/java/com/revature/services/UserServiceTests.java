@@ -33,12 +33,14 @@ import com.revature.models.User;
 import com.revature.repositories.UserDAO;
 import com.revature.services.UserService;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(SpringExtension.class)
 class UserServiceTests {
 	private static final Logger log=LoggerFactory.getLogger(UserController.class);
 	
-	@InjectMocks UserService service;
+	@InjectMocks UserService service = new UserService(new SimpleMeterRegistry());
 	
 	@Mock UserDAO uDAO;
 	
