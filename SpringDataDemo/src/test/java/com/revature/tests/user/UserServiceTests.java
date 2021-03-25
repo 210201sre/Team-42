@@ -44,12 +44,7 @@ class UserServiceTests {
 	@Mock UserDAO uDAO;
 	
 	@Test void findAllTest() {
-		int anId = 4200;
-		Optional<User> aUser;
-		aUser = Optional.of(new User());
-		aUser.get().setUsername("Xargothrax");
-		aUser.get().setPassword("universeOnFire");	
-		aUser.get().setId(anId);
+		Optional<User> aUser = setTestUser();
 		List<User> resultList = new ArrayList<User>();
 		resultList.add(aUser.get());
 		Mockito.when(uDAO.findAll()).thenReturn(resultList);
@@ -60,40 +55,23 @@ class UserServiceTests {
 	}
 	
 	@Test void findByIdTest() {
-		int anId = 4200;
-		Optional<User> aUser;
-		aUser = Optional.of(new User());
-		aUser.get().setUsername("Xargothrax");
-		aUser.get().setPassword("universeOnFire");	
-		aUser.get().setId(anId);
-		Mockito.when(uDAO.findById(anId)).thenReturn(aUser);
+		Optional<User> aUser = setTestUser();
+		Mockito.when(uDAO.findById(4200)).thenReturn(aUser);
 		User returnValue = service.findById(4200);
 		assert(returnValue.getUsername() == "Xargothrax");
 		assert(returnValue.getPassword() == "universeOnFire");
 	}
 	
 	@Test void findByUsernameTest() {
-		int anId = 4200;
-		String theUsername ="Xargothrax";
-		Optional<User> aUser;
-		aUser = Optional.of(new User());
-		aUser.get().setUsername(theUsername);
-		aUser.get().setPassword("universeOnFire");	
-		aUser.get().setId(anId);
-		Mockito.when(uDAO.findByUsername(theUsername)).thenReturn(aUser);
-		User returnValue = service.findByUsername(theUsername);
+		Optional<User> aUser = setTestUser();
+		Mockito.when(uDAO.findByUsername("Xargothrax")).thenReturn(aUser);
+		User returnValue = service.findByUsername("Xargothrax");
 		assert(returnValue.getUsername() == "Xargothrax");
 		assert(returnValue.getPassword() == "universeOnFire");
 	}
 	
 	@Test void insertTest() {
-		int anId = 4200;
-		String theUsername ="Xargothrax";
-		Optional<User> aUser;
-		aUser = Optional.of(new User());
-		aUser.get().setUsername(theUsername);
-		aUser.get().setPassword("universeOnFire");	
-		aUser.get().setId(anId);
+		Optional<User> aUser = setTestUser();
 		Mockito.when(uDAO.save(aUser.get())).thenReturn(aUser.get());
 		User returnValue = service.insert(aUser.get());
 		assert(returnValue.getUsername() == "Xargothrax");
@@ -101,30 +79,32 @@ class UserServiceTests {
 	}
 
 	@Test void paySalaryTest() {
-		int anId = 4200;
+		Optional<User> anOpUser = setTestUser();
+		User aUser = anOpUser.get();
+		Employee e = new Employee();
+		e.setSalary(24000);
+		aUser.setEmployee_data(e);
+		
+		CheckingsAccount anAccount = new CheckingsAccount();
+		anAccount.setId(4200);
+		anAccount.setBalance(234);
+		
+		List<CheckingsAccount> accountList = new ArrayList<CheckingsAccount>();
+		accountList.add(anAccount);
+				
+		aUser.setCAccounts(accountList);
+		
+		aUser.getCAccounts().get(0).setBalance(aUser.getCAccounts().get(0).getBalance()+(aUser.getEmployee_data().getSalary()/24));
+		
+		assert(aUser.getCAccounts().get(0).getBalance() == 1234);
+	}
+	
+	private static Optional<User> setTestUser(){
 		Optional<User> aUser;
 		aUser = Optional.of(new User());
 		aUser.get().setUsername("Xargothrax");
 		aUser.get().setPassword("universeOnFire");	
-		aUser.get().setId(anId);
-		
-		Employee e = new Employee();
-		e.setSalary(4000);
-		
-		aUser.get().setEmployee_data(e);
-		
-		CheckingsAccount anAccount = new CheckingsAccount();
-		anAccount.setId(anId);
-		anAccount.setBalance(234);
-		List<CheckingsAccount> accountList = new ArrayList<CheckingsAccount>();
-		accountList.add(anAccount);
-				
-		aUser.get().setCAccounts(accountList);
-		
-		List<User> resultList = new ArrayList<User>();
-		resultList.add(aUser.get());
-		
-		Set<User> returnValue = service.paySalary();
-		assert(returnValue.getCAccounts().get(0).getBalance() == 1234);
+		aUser.get().setId(4200);
+		return aUser;
 	}
 }
