@@ -1,5 +1,6 @@
 package com.revature.services;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -88,6 +89,7 @@ class UserServiceTests {
 
 		//make a user
 		Optional<User> aUser = setTestUser();
+		
 		User user=aUser.get();
 		//give them employee data
 		Employee e = new Employee();
@@ -106,15 +108,16 @@ class UserServiceTests {
 		
 		//put them in anArrayList to be returned by the mock of service.findAll()
 		List<User> allFound = new ArrayList<User>();
+		
 		allFound.add(aUser.get());
 
 		Set<User> returnSet = new HashSet<User>();
 		returnSet.add(user);
-		
 		List<User> users = new ArrayList<User>();
 		for (User u : returnSet) {
 			users.add(u);
 		}
+		when(uDAO.findAll()).thenReturn(users);
 		List<User> returnList = new ArrayList<User>();
 		
 		for(User u: users) {
@@ -123,6 +126,7 @@ class UserServiceTests {
 				if(u.getCAccounts().size()>0) {
 					u.getCAccounts().get(0).setBalance(u.getCAccounts().get(0).getBalance()+(u.getEmployee_data().getSalary()/24));
 					returnList.add(u);
+					when(uDAO.save(user)).thenReturn((u));
 				}
 			}
 		}
