@@ -73,3 +73,4 @@
 [2m2021-03-25 18:16:28.606[0;39m [event=Salary] [32m INFO[0;39m [35m29572[0;39m [2m---[0;39m [2m[nio-8090-exec-2][0;39m [36mcom.revature.controllers.UserController [0;39m [2m:[0;39m salary paid
 [2m2021-03-25 18:17:48.493[0;39m [] [32m INFO[0;39m [35m29572[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mcom.revature.App                        [0;39m [2m:[0;39m Starting App using Java 15.0.1 on MSI with PID 29572 (C:\Users\rober\Documents\Revature\210201sre\Team42\Team-42\target\classes started by rober in C:\Users\rober\Documents\Revature\210201sre\Team42\Team-42)
 [2m2021-03-25 18:17:50.497[0;39m [] [32m INFO[0;39m [35m29572[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mcom.revature.App                        [0;39m [2m:[0;39m No active profile set, falling back to default profiles: default
+2021-03-25 18:28:27.233 [event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : salary paid
