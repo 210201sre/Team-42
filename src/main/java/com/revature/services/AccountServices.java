@@ -32,12 +32,12 @@ import io.micrometer.core.instrument.MeterRegistry;
 public class AccountServices {
 	private MeterRegistry meterRegistry;
 	private Counter successAccessCounter;
-	private Counter failAccessCounter;
+	private Counter accessCounter;
 	
 	public AccountServices (MeterRegistry meterRegistry) {
 		this.meterRegistry = meterRegistry;
         successAccessCounter = meterRegistry.counter("accessed account", "type", "success");
-        failAccessCounter = meterRegistry.counter("accessed account", "type", "fail");
+        accessCounter = meterRegistry.counter("accessed account", "type", "access");
 	}
 
 	@Autowired
@@ -189,6 +189,7 @@ public class AccountServices {
 	}
 	
 	public User grantAccessToUser(int actId,int userId) {
+		accessCounter.increment(1);
 		MDC.put("event", "Grant Access");
 		MDC.put("Account Id", actId);
 		MDC.put("User Id", userId);
@@ -208,10 +209,9 @@ public class AccountServices {
 				account1=account;
 		}
 		
-		if(account1==null) {
+		if(account1==null || u==null) {
 			log.warn("account not found");
-			MDC.clear();
-			failAccessCounter.increment(1);
+			MDC.clear();;
 			return null;
 		}
 		
