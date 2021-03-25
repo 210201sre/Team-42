@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.hibernate.exception.JDBCConnectionException;
 import org.jboss.logging.MDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +33,16 @@ import io.micrometer.core.instrument.MeterRegistry;
 public class AccountServices {
 	private MeterRegistry meterRegistry;
 	private Counter successAccessCounter;
-	private Counter failAccessCounter;
+	private Counter accessCounter;
+	private Counter successJdbcCounter;
+	private Counter jdbcCounter;
 	
 	public AccountServices (MeterRegistry meterRegistry) {
 		this.meterRegistry = meterRegistry;
         successAccessCounter = meterRegistry.counter("accessed account", "type", "success");
-        failAccessCounter = meterRegistry.counter("accessed account", "type", "fail");
+        accessCounter = meterRegistry.counter("accessed account", "type", "access");
+        successJdbcCounter = meterRegistry.counter("jdbc connected", "type", "success");;
+    	jdbcCounter = meterRegistry.counter("jdbc connected", "type", "connect");;
 	}
 
 	@Autowired
@@ -50,15 +55,41 @@ public class AccountServices {
 	private static final Logger log=LoggerFactory.getLogger(UserController.class);
 	
 	public Set<CheckingsAccount> findAllCheckingsAccounts() {
-		return checkingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+		Set<CheckingsAccount> caSet = null;
+		jdbcCounter.increment(1);
+		try {
+			caSet = checkingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException e) {
+			log.info(e.toString());
+		}
+		return caSet;
 	}
 
 	public CheckingsAccount findCheckingsAccountsById(int id) {
-		return checkingsAccountDAO.findById(id).orElseThrow(() -> new UserNotFoundException("No Employee found with id " + id));
+		CheckingsAccount ca = null;
+		jdbcCounter.increment(1);
+		try {
+			ca = checkingsAccountDAO.findById(id).orElseThrow(() -> new UserNotFoundException("No Employee found with id " + id));
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException e) {
+			log.info(e.toString());
+		}
+		return ca;
 	}
 
 	public CheckingsAccount insert(CheckingsAccount e, int id) {
-		Optional<User> oU = userDAO.findById(id);
+		Optional<User> oU = null;
+		jdbcCounter.increment(1);
+		try {
+			oU = userDAO.findById(id);
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
 		User u = oU.get();
 		MDC.put("event", "make account");
 		MDC.put("userid", id);
@@ -71,7 +102,15 @@ public class AccountServices {
 			
 		}
 		else e.getU().add(u);
-		CheckingsAccount cATemp = checkingsAccountDAO.save(e);
+		CheckingsAccount cATemp = null;
+		jdbcCounter.increment(1);
+		try {
+			cATemp = checkingsAccountDAO.save(e);
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
 		MDC.put("accountid", e.getId());
 		//u.getCAccounts().add(cATemp);   
 		if(u.getCAccounts()==null) //safety check to ensure user has checking account
@@ -85,7 +124,14 @@ public class AccountServices {
 		// end of add
 		
 		log.info("checkings account created and linked to user");
-		userDAO.save(u);
+		jdbcCounter.increment(1);
+		try {
+			userDAO.save(u);
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
 		MDC.clear();
 		return cATemp;
 	}
@@ -94,7 +140,16 @@ public class AccountServices {
 		MDC.put("event", "make account");
 		log.info("found all savings accounts");
 		MDC.clear();
-		return savingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+		Set<SavingsAccount> saSet = null;
+		jdbcCounter.increment(1);
+		try {
+			saSet = savingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
+		return saSet;
 	}
 
 	public SavingsAccount findSavingsAccountsById(int id) {
@@ -102,11 +157,28 @@ public class AccountServices {
 		MDC.put("Account Id", id);
 		log.info("found savings account with id");
 		MDC.clear();
-		return savingsAccountDAO.findById(id).orElseThrow(() -> new UserNotFoundException("No Employee found with id " + id));
+		SavingsAccount sa = null;
+		jdbcCounter.increment(1);
+		try {
+			sa = savingsAccountDAO.findById(id).orElseThrow(() -> new UserNotFoundException("No Employee found with id " + id));
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
+		return sa;
 	}
 
 	public SavingsAccount insert(SavingsAccount e, int id) {
-		Optional<User> oU = userDAO.findById(id);
+		Optional<User> oU = null;
+		jdbcCounter.increment(1);
+		try {
+			oU = userDAO.findById(id);
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
 		User u = oU.get();
 		MDC.put("event", "make account");
 		MDC.put("userid", id);
@@ -119,8 +191,15 @@ public class AccountServices {
 			
 		}
 		else e.getU().add(u);
-		SavingsAccount cATemp = savingsAccountDAO.save(e);
-
+		SavingsAccount cATemp = null;
+		jdbcCounter.increment(1);
+		try {
+			cATemp = savingsAccountDAO.save(e);
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
 		
 		//u.getSAccounts().add(cATemp);   
 				if(u.getSAccounts()==null) //safety check to ensure user has a savings account
@@ -132,7 +211,14 @@ public class AccountServices {
 				}
 				else u.getSAccounts().add(cATemp);
 				// end of add
-		userDAO.save(u);
+		jdbcCounter.increment(1);
+		try {
+			userDAO.save(u);
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
 		log.info("checkings account created and linked to user");
 		MDC.clear();
 		return cATemp;
@@ -148,9 +234,23 @@ public class AccountServices {
 		MDC.put("Amount", amount);
 		
 		Set<SavingsAccount> tempSAccounts=new HashSet<>();
-		tempSAccounts=savingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+		jdbcCounter.increment(1);
+		try {
+			tempSAccounts=savingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
 		Set<CheckingsAccount> tempCAccounts=new HashSet<>();
-		tempCAccounts=checkingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+		jdbcCounter.increment(1);
+		try {
+			tempCAccounts=checkingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
 		Set<Account> accounts=new HashSet<>();
 		accounts.addAll(tempCAccounts);
 		accounts.addAll(tempSAccounts);
@@ -171,12 +271,46 @@ public class AccountServices {
 		account1.setBalance(account1.getBalance()-amount);
 		account2.setBalance(account2.getBalance()+amount);
 
-		if(account1 instanceof SavingsAccount)
-			savingsAccountDAO.save((SavingsAccount) account1);
-		else checkingsAccountDAO.save((CheckingsAccount) account1);
-		if(account2 instanceof SavingsAccount)
-			savingsAccountDAO.save((SavingsAccount) account2);
-		else checkingsAccountDAO.save((CheckingsAccount) account2);
+		if(account1 instanceof SavingsAccount) {
+			jdbcCounter.increment(1);
+			try {
+				savingsAccountDAO.save((SavingsAccount) account1);
+				successJdbcCounter.increment(1);
+			}
+			catch (JDBCConnectionException j) {
+				log.info(j.toString());
+			}
+		}
+		else {
+			jdbcCounter.increment(1);
+			try {
+				checkingsAccountDAO.save((CheckingsAccount) account1);
+				successJdbcCounter.increment(1);
+			}
+			catch (JDBCConnectionException j) {
+				log.info(j.toString());
+			}
+		}
+		if(account2 instanceof SavingsAccount) {
+			jdbcCounter.increment(1);
+			try {
+				savingsAccountDAO.save((SavingsAccount) account2);
+				successJdbcCounter.increment(1);
+			}
+			catch (JDBCConnectionException j) {
+				log.info(j.toString());
+			}
+		}
+		else {
+			jdbcCounter.increment(1);
+			try {
+				checkingsAccountDAO.save((CheckingsAccount) account2);
+				successJdbcCounter.increment(1);
+			}
+			catch (JDBCConnectionException j) {
+				log.info(j.toString());
+			}
+		}
 		
 		Set<Account> returnaccounts=new HashSet<>();
 		returnaccounts.add(account1);
@@ -189,15 +323,30 @@ public class AccountServices {
 	}
 	
 	public User grantAccessToUser(int actId,int userId) {
+		accessCounter.increment(1);
 		MDC.put("event", "Grant Access");
 		MDC.put("Account Id", actId);
 		MDC.put("User Id", userId);
 		User u=userDAO.findById(userId).get();
 		Account account1=null;
 		Set<SavingsAccount> tempSAccounts=new HashSet<>();
-		tempSAccounts=savingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+		jdbcCounter.increment(1);
+		try {
+			tempSAccounts=savingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
 		Set<CheckingsAccount> tempCAccounts=new HashSet<>();
-		tempCAccounts=checkingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+		jdbcCounter.increment(1);
+		try {
+			tempCAccounts=checkingsAccountDAO.findAll().stream().collect(Collectors.toSet());
+			successJdbcCounter.increment(1);
+		}
+		catch (JDBCConnectionException j) {
+			log.info(j.toString());
+		}
 		Set<Account> accounts=new HashSet<>();
 		accounts.addAll(tempCAccounts);
 		accounts.addAll(tempSAccounts);
@@ -208,10 +357,9 @@ public class AccountServices {
 				account1=account;
 		}
 		
-		if(account1==null) {
+		if(account1==null || u==null) {
 			log.warn("account not found");
 			MDC.clear();
-			failAccessCounter.increment(1);
 			return null;
 		}
 		
@@ -235,7 +383,14 @@ public class AccountServices {
 				
 			}
 			else ((SavingsAccount)account1).getU().add(u);
-			savingsAccountDAO.save((SavingsAccount)account1);
+			jdbcCounter.increment(1);
+			try {
+				savingsAccountDAO.save((SavingsAccount)account1);
+				successJdbcCounter.increment(1);
+			}
+			catch (JDBCConnectionException j) {
+				log.info(j.toString());
+			}
 		}
 		else {
 			//u.getCAccounts().add((CheckingsAccount)account1); 
@@ -256,7 +411,14 @@ public class AccountServices {
 				
 			}
 			else ((CheckingsAccount)account1).getU().add(u);
-			checkingsAccountDAO.save((CheckingsAccount)account1);
+			jdbcCounter.increment(1);
+			try {
+				checkingsAccountDAO.save((CheckingsAccount)account1);
+				successJdbcCounter.increment(1);
+			}
+			catch (JDBCConnectionException j) {
+				log.info(j.toString());
+			}
 		
 		}
 		log.info("access granted");
