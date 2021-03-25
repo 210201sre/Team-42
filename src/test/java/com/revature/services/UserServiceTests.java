@@ -90,13 +90,13 @@ class UserServiceTests {
 		//make a user
 		Optional<User> aUser = setTestUser();
 		
-		User user=aUser.get();
+		aUser.get();
 		//give them employee data
 		Employee e = new Employee();
 		e.setSalary(24000);
 		
-		user.setEmployee_data(e);
-		user.setEmployee(true);
+		aUser.get().setEmployee_data(e);
+		aUser.get().setEmployee(true);
 		
 		CheckingsAccount anAccount = new CheckingsAccount();
 		anAccount.setId(4200);
@@ -104,7 +104,7 @@ class UserServiceTests {
 		List<CheckingsAccount> accountList = new ArrayList<CheckingsAccount>();
 		accountList.add(anAccount);
 				
-		user.setCAccounts(accountList);
+		aUser.get().setCAccounts(accountList);
 		
 		//put them in anArrayList to be returned by the mock of service.findAll()
 		List<User> allFound = new ArrayList<User>();
@@ -112,12 +112,13 @@ class UserServiceTests {
 		allFound.add(aUser.get());
 
 		Set<User> returnSet = new HashSet<User>();
-		returnSet.add(user);
+		returnSet.add(aUser.get());
 		List<User> users = new ArrayList<User>();
 		for (User u : returnSet) {
 			users.add(u);
 		}
 		when(uDAO.findAll()).thenReturn(users);
+		users=uDAO.findAll();
 		List<User> returnList = new ArrayList<User>();
 		
 		for(User u: users) {
@@ -126,7 +127,8 @@ class UserServiceTests {
 				if(u.getCAccounts().size()>0) {
 					u.getCAccounts().get(0).setBalance(u.getCAccounts().get(0).getBalance()+(u.getEmployee_data().getSalary()/24));
 					returnList.add(u);
-					when(uDAO.save(user)).thenReturn((u));
+					when(uDAO.save(u)).thenReturn((u));
+					uDAO.save(u);
 				}
 			}
 		}
