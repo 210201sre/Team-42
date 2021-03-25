@@ -93,9 +93,7 @@ class UserServiceTests {
 				
 		aUser.get().setCAccounts(accountList);
 		
-		
-		User returnValue = service.insert(aUser.get());
-//		aUser.get().getCAccounts().get(0).setBalance(aUser.get().getCAccounts().get(0).getBalance()+(aUser.get().getEmployee_data().getSalary()/24));
+		aUser.get().getCAccounts().get(0).setBalance(aUser.get().getCAccounts().get(0).getBalance()+(aUser.get().getEmployee_data().getSalary()/24));
 		
 		assert(aUser.get().getCAccounts().get(0).getBalance() == 1234);
 	}
