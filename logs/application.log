@@ -71,3 +71,13 @@
 2021-03-25 17:59:29.927 [event=find all users]  WARN 16824 --- [           main] com.revature.controllers.UserController  : no users found :(
 2021-03-25 18:00:49.017 []  INFO   --- [           main] com.revature.controllers.UserController  : test if this log appears in find by username-Aztal
 2021-03-25 18:01:04.449 []  INFO   --- [           main] com.revature.controllers.UserController  : test if this log appears in find by username-Aztal
+2021-03-25 18:12:17.890 []  INFO   --- [           main] com.revature.controllers.UserController  : test if this log appears in find by username-Aztal
+2021-03-25 18:12:20.005 [event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : find all executed-Aztal
+2021-03-25 18:12:20.006 [event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : empty set to return created-Aztal
+2021-03-25 18:12:20.006 [event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : entered forloop-Aztal
+2021-03-25 18:12:20.007 [event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : salary(ies) paid
+2021-03-25 18:18:43.932 []  INFO   --- [           main] com.revature.controllers.UserController  : test if this log appears in find by username-Aztal
+2021-03-25 18:18:46.080 [event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : find all executed-Aztal
+2021-03-25 18:18:46.082 [event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : empty set to return created-Aztal
+2021-03-25 18:18:46.082 [event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : entered forloop-Aztal
+2021-03-25 18:18:46.082 [event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : salary(ies) paid

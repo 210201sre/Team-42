@@ -107,7 +107,7 @@ public class UserService {
 			log.info("entered forloop-Aztal");
 			if(u.isEmployee())	{
 				log.info("found an employee named: " + u.getUsername() + "-Aztal");
-				if(u.getCAccounts() != null) {
+				if(u.getCAccounts().size() > 0) {
 					log.info(u.getUsername() + "has a cecking account-Aztal");
 					u.getCAccounts().get(0).setBalance(u.getCAccounts().get(0).getBalance()+(u.getEmployee_data().getSalary()/24));
 					log.info("payed " + u.getUsername() + "-Aztal");

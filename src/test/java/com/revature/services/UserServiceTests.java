@@ -84,8 +84,6 @@ class UserServiceTests {
 
 	@Test void paySalaryTest() {
 		
-		//make a mock of paySalary()
-
 		//make a user
 		Optional<User> aUser = setTestUser();
 		
@@ -110,9 +108,11 @@ class UserServiceTests {
 		//make a mock of findAll()
 		Mockito.when(uDAO.findAll()).thenReturn(allFound);
 		
+		//make a hashSet for paySalary() to return into
 		Set<User> returnSet = new HashSet<User>();
 		returnSet = service.paySalary();
 		
+		//convert the set into a list because I can remember how to access an element of a list
 		List<User> returnList = new ArrayList<User>();
 		for (User u : returnSet) {
 			returnList.add(u);
