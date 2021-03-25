@@ -28,7 +28,7 @@ import com.revature.repositories.CheckingsAccountDAO;
 import com.revature.repositories.SavingsAccountDAO;
 import com.revature.repositories.UserDAO;
 
-
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
 import com.revature.models.User;
 
@@ -36,7 +36,7 @@ import com.revature.models.User;
 public class AccountServicesTest {
 
 	@InjectMocks
-	AccountServices services;
+	AccountServices services = new AccountServices(new SimpleMeterRegistry());
 
 	@Mock
 	SavingsAccountDAO savingsAccountDAO;
