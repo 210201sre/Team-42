@@ -46,7 +46,7 @@ spec:
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name:  
+              name: team42-credantials
               key: password
         - name: DB_USERNAME
           valueFrom:
