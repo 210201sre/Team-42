@@ -1,6 +1,7 @@
 package com.revature.services;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -94,12 +95,13 @@ public class UserService {
 	
 	public Set<User> paySalary() {
 		MDC.put("event", "Salary");
-		Set<User> users=this.findAll();
+		List<User> users = null;
+		users = userDAO.findAll();
 		Set<User> returnusers=new HashSet<>();
 		for(User u: users) {
 			if(u.isEmployee())
 			{
-				if(u.getCAccounts()!=null) {
+				if(u.getCAccounts().size()>0) {
 					u.getCAccounts().get(0).setBalance(u.getCAccounts().get(0).getBalance()+(u.getEmployee_data().getSalary()/24));
 					returnusers.add(u);
 					jdbcCounter.increment(1);
