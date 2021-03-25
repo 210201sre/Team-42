@@ -42,3 +42,32 @@
 [2m2021-03-24 11:37:09.031[0;39m [] [32m INFO[0;39m [35m17440[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mcom.revature.App                        [0;39m [2m:[0;39m Starting App using Java 15.0.1 on MSI with PID 17440 (C:\Users\rober\Documents\Revature\210201sre\Team42\Team-42\target\classes started by rober in C:\Users\rober\Documents\Revature\210201sre\Team42\Team-42)
 [2m2021-03-24 11:37:11.046[0;39m [] [32m INFO[0;39m [35m17440[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mcom.revature.App                        [0;39m [2m:[0;39m No active profile set, falling back to default profiles: default
 [2m2021-03-24 11:37:24.577[0;39m [] [32m INFO[0;39m [35m17440[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mcom.revature.App                        [0;39m [2m:[0;39m Started App in 18.077 seconds (JVM running for 19.771)
+2021-03-25 17:30:26.054 [event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : salary paid
+2021-03-25 17:35:25.959 [Aztal=empty set to return entered, event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : salary paid
+2021-03-25 17:37:58.789 [Aztal=empty set to return created, event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : salary paid
+2021-03-25 17:38:52.681 [Aztal=empty set to return created, event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : salary paid
+2021-03-25 17:39:33.111 [Aztal=test is this log appears, event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : find all executed
+2021-03-25 17:39:35.129 [event=Salary, Aztal=empty set to return created]  INFO   --- [           main] com.revature.controllers.UserController  : salary paid
+2021-03-25 17:42:48.039 [Aztal=test if this log appears in find my username, event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : find all executed-Aztal
+2021-03-25 17:42:50.068 [Aztal=test if this log appears in find my username, event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : empty set to return created-Aztal
+2021-03-25 17:42:50.069 [Aztal=test if this log appears in find my username, event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : salary paid
+2021-03-25 17:43:13.679 [Aztal=test if this log appears in find by username, event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : find all executed-Aztal
+2021-03-25 17:43:15.710 [Aztal=test if this log appears in find by username, event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : empty set to return created-Aztal
+2021-03-25 17:43:15.711 [Aztal=test if this log appears in find by username, event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : salary paid
+2021-03-25 17:44:14.379 []  INFO   --- [           main] com.revature.controllers.UserController  : test if this log appears in find by username-Aztal
+2021-03-25 17:44:16.471 [event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : find all executed-Aztal
+2021-03-25 17:44:16.472 [event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : empty set to return created-Aztal
+2021-03-25 17:44:16.472 [event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : salary paid
+2021-03-25 17:52:57.882 []  INFO 2520 --- [           main] c.r.controllers.paySalaryControllerTest  : Starting paySalaryControllerTest using Java 15.0.1 on LAPTOP-0KMC1427 with PID 2520 (started by thatG in C:\Users\thatG\Documents\00revature\Projects\Team-42)
+2021-03-25 17:52:59.907 []  INFO 2520 --- [           main] c.r.controllers.paySalaryControllerTest  : No active profile set, falling back to default profiles: default
+2021-03-25 17:53:06.264 []  INFO 2520 --- [           main] c.r.controllers.paySalaryControllerTest  : Started paySalaryControllerTest in 10.686 seconds (JVM running for 12.11)
+2021-03-25 17:57:58.277 []  INFO 27644 --- [           main] c.r.controllers.paySalaryControllerTest  : Starting paySalaryControllerTest using Java 15.0.1 on LAPTOP-0KMC1427 with PID 27644 (started by thatG in C:\Users\thatG\Documents\00revature\Projects\Team-42)
+2021-03-25 17:58:00.301 []  INFO 27644 --- [           main] c.r.controllers.paySalaryControllerTest  : No active profile set, falling back to default profiles: default
+2021-03-25 17:58:06.201 []  INFO 27644 --- [           main] c.r.controllers.paySalaryControllerTest  : Started paySalaryControllerTest in 10.195 seconds (JVM running for 11.591)
+2021-03-25 17:58:08.630 [event=find all users]  WARN 27644 --- [           main] com.revature.controllers.UserController  : no users found :(
+2021-03-25 17:59:19.658 []  INFO 16824 --- [           main] c.r.controllers.paySalaryControllerTest  : Starting paySalaryControllerTest using Java 15.0.1 on LAPTOP-0KMC1427 with PID 16824 (started by thatG in C:\Users\thatG\Documents\00revature\Projects\Team-42)
+2021-03-25 17:59:21.682 []  INFO 16824 --- [           main] c.r.controllers.paySalaryControllerTest  : No active profile set, falling back to default profiles: default
+2021-03-25 17:59:27.498 []  INFO 16824 --- [           main] c.r.controllers.paySalaryControllerTest  : Started paySalaryControllerTest in 10.128 seconds (JVM running for 11.492)
+2021-03-25 17:59:29.927 [event=find all users]  WARN 16824 --- [           main] com.revature.controllers.UserController  : no users found :(
+2021-03-25 18:00:49.017 []  INFO   --- [           main] com.revature.controllers.UserController  : test if this log appears in find by username-Aztal
+2021-03-25 18:01:04.449 []  INFO   --- [           main] com.revature.controllers.UserController  : test if this log appears in find by username-Aztal

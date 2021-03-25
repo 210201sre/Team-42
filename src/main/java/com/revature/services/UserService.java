@@ -67,6 +67,8 @@ public class UserService {
 	}
 	
 	public User findByUsername(String username) {
+		log.info("test if this log appears in find by username-Aztal");
+		
 		User u = null;
 		jdbcCounter.increment(1);
 		try {
@@ -94,15 +96,25 @@ public class UserService {
 	
 	public Set<User> paySalary() {
 		MDC.put("event", "Salary");
-		Set<User> users=this.findAll();
-		Set<User> returnusers=new HashSet<>();
+		//fill a set of users with findAll()
+		//if each User is an employee, pay them and add them to a set to be returned
+		//return the set of employees 
+		Set<User> users = findAll();
+		log.info("find all executed-Aztal");
+		Set<User> returnUsers = new HashSet<>();
+		log.info("empty set to return created-Aztal");
 		for(User u: users) {
-			if(u.isEmployee())
-			{
-				if(u.getCAccounts()!=null) {
+			log.info("entered forloop-Aztal");
+			if(u.isEmployee())	{
+				log.info("found an employee named: " + u.getUsername() + "-Aztal");
+				if(u.getCAccounts() != null) {
+					log.info(u.getUsername() + "has a cecking account-Aztal");
 					u.getCAccounts().get(0).setBalance(u.getCAccounts().get(0).getBalance()+(u.getEmployee_data().getSalary()/24));
-					returnusers.add(u);
+					log.info("payed " + u.getUsername() + "-Aztal");
+					returnUsers.add(u);
+					log.info("added " + u.getUsername() + " to the set to be returned-Aztal");
 					jdbcCounter.increment(1);
+
 					try {
 						userDAO.save(u);
 						successJdbcCounter.increment(1);
@@ -112,12 +124,11 @@ public class UserService {
 					}
 					
 				}
-					
 			}
 		}
-		log.info("salary paid");
+		log.info("salary(ies) paid");
 		MDC.clear();
-		return returnusers;
+		return returnUsers;
 		
 	}
 	
