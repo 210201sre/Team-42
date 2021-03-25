@@ -94,6 +94,7 @@ class UserServiceTests {
 		e.setSalary(24000);
 		
 		user.setEmployee_data(e);
+		user.setEmployee(true);
 		
 		CheckingsAccount anAccount = new CheckingsAccount();
 		anAccount.setId(4200);
@@ -110,11 +111,23 @@ class UserServiceTests {
 		Set<User> returnSet = new HashSet<User>();
 		returnSet.add(user);
 		
-		List<User> returnList = new ArrayList<User>();
+		List<User> users = new ArrayList<User>();
 		for (User u : returnSet) {
-			returnList.add(u);
+			users.add(u);
 		}
-		assert(returnList.get(0).getCAccounts().get(0).getBalance() == 234);
+		List<User> returnList = new ArrayList<User>();
+		
+		for(User u: users) {
+			if(u.isEmployee())
+			{
+				if(u.getCAccounts().size()>0) {
+					u.getCAccounts().get(0).setBalance(u.getCAccounts().get(0).getBalance()+(u.getEmployee_data().getSalary()/24));
+					returnList.add(u);
+				}
+			}
+		}
+		
+		assert(returnList.get(0).getCAccounts().get(0).getBalance() == 1234);
 	}
 	
 	private static Optional<User> setTestUser(){
