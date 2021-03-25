@@ -24,8 +24,21 @@ import com.revature.models.User;
 import com.revature.repositories.CheckingsAccountDAO;
 import com.revature.repositories.SavingsAccountDAO;
 import com.revature.repositories.UserDAO;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+
 @Service
 public class AccountServices {
+	private MeterRegistry meterRegistry;
+	private Counter successAccessCounter;
+	private Counter failAccessCounter;
+	
+	public AccountServices (MeterRegistry meterRegistry) {
+		this.meterRegistry = meterRegistry;
+        successAccessCounter = meterRegistry.counter("accessed account", "type", "success");
+        failAccessCounter = meterRegistry.counter("accessed account", "type", "fail");
+	}
 
 	@Autowired
 	private SavingsAccountDAO savingsAccountDAO;
@@ -198,6 +211,7 @@ public class AccountServices {
 		if(account1==null) {
 			log.warn("account not found");
 			MDC.clear();
+			failAccessCounter.increment(1);
 			return null;
 		}
 		
@@ -246,6 +260,7 @@ public class AccountServices {
 		
 		}
 		log.info("access granted");
+		successAccessCounter.increment(1);
 		return u;
 		
 	}

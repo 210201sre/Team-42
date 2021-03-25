@@ -21,19 +21,9 @@ import com.revature.models.CheckingsAccount;
 import com.revature.models.User;
 import com.revature.services.AccountServices;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
-
 @RestController
 public class AccountController {
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
-	private MeterRegistry meterRegistry;
-	private Counter successCounter;
-	
-	public AccountController (MeterRegistry meterRegistry) {
-		this.meterRegistry = meterRegistry;
-        successCounter = meterRegistry.counter("accessed account", "type", "success");
-	}
 	
 	@Autowired
 	private AccountServices accountServices;
@@ -122,7 +112,6 @@ public class AccountController {
 	@PostMapping("/accounts/acess/{actid}/{userid}")
 	public ResponseEntity<User> grantAccess(@PathVariable("actid") int actId, @PathVariable("userid") int userId) {
 		User u = accountServices.grantAccessToUser(actId, userId);
-		successCounter.increment(1);
 		return ResponseEntity.ok(u);
 
 	}
