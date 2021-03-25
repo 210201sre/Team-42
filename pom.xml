@@ -25,7 +25,7 @@
 		<coverage.reports.dir>target/coverage-reports</coverage.reports.dir>
 		<sonar.coverage.jacoco.xmlReportPaths>target/coverage-reports/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		
-		<sonar.exclusions>src/**/models/**/*, src/**/controllers/**/*, src/**/repositories/**/*, src/**/errorhandling/**/*, src/**/exceptions/**/*, src/**/advice/**/*</sonar.exclusions>
+		<sonar.exclusions>src/**/models/**/*, src/**/controllers/**/*, src/**/repositories/**/*, src/**/errorhandling/**/*, src/**/exceptions/**/*, src/**/advice/**/*, src/main/java/com/revature/App.java</sonar.exclusions>
 		
 	</properties>
 	<dependencies>
@@ -121,6 +121,7 @@
 						<exclude>**/exceptions/**</exclude>
 						<exclude>**/errorhandling/**</exclude>
 						<exclude>**/advice/**</exclude>
+						<exclude>*src/main/java/com/revature/App.java</exclude>
 					</excludes>
 				</configuration>
 				<executions>
