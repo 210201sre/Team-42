@@ -13,7 +13,6 @@ pipeline {
         containers:
         - name: jnlp
           image: odavid/jenkins-jnlp-slave:jdk11
-          workingDir: /home/jenkins
           env:
           - name: DOCKER_HOST
             value: tcp://localhost:2375
