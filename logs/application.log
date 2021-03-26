@@ -74,3 +74,22 @@
 [2m2021-03-25 18:17:48.493[0;39m [] [32m INFO[0;39m [35m29572[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mcom.revature.App                        [0;39m [2m:[0;39m Starting App using Java 15.0.1 on MSI with PID 29572 (C:\Users\rober\Documents\Revature\210201sre\Team42\Team-42\target\classes started by rober in C:\Users\rober\Documents\Revature\210201sre\Team42\Team-42)
 [2m2021-03-25 18:17:50.497[0;39m [] [32m INFO[0;39m [35m29572[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36mcom.revature.App                        [0;39m [2m:[0;39m No active profile set, falling back to default profiles: default
 2021-03-25 18:28:27.233 [event=Salary]  INFO   --- [           main] com.revature.controllers.UserController  : salary paid
+2021-03-25 17:29:04.993 [accountid=1, event=make account, userid=1]  INFO   --- [           main] com.revature.controllers.UserController  : checkings account created and linked to user
+2021-03-25 17:29:07.077 [Account Id=1, User Id=1, event=Grant Access]  INFO   --- [           main] com.revature.controllers.UserController  : access granted
+2021-03-25 17:29:07.085 [Account Id=1, accountid=1, User Id=1, event=make account, userid=1]  INFO   --- [           main] com.revature.controllers.UserController  : checkings account created and linked to user
+2021-03-25 17:29:07.087 [event=make account]  INFO   --- [           main] com.revature.controllers.UserController  : found all savings accounts
+2021-03-25 17:29:07.089 [Account Id=1, event=find account by id]  INFO   --- [           main] com.revature.controllers.UserController  : found savings account with id
+2021-03-25 17:29:07.093 []  INFO   --- [           main] com.revature.controllers.UserController  : org.hibernate.exception.JDBCConnectionException
+2021-03-25 17:29:07.098 [Account_id_2=2, Amount=50.0, Account_Id_1=1, event=Grant Access]  INFO   --- [           main] com.revature.controllers.UserController  : founds transfered
+2021-03-25 17:31:21.393 [accountid=1, event=make account, userid=1]  INFO   --- [           main] com.revature.controllers.UserController  : checkings account created and linked to user
+2021-03-25 17:31:23.503 [Account Id=1, User Id=1, event=Grant Access]  INFO   --- [           main] com.revature.controllers.UserController  : access granted
+2021-03-25 17:31:23.511 [Account Id=1, accountid=1, User Id=1, event=make account, userid=1]  INFO   --- [           main] com.revature.controllers.UserController  : checkings account created and linked to user
+2021-03-25 17:31:23.513 [event=make account]  INFO   --- [           main] com.revature.controllers.UserController  : found all savings accounts
+2021-03-25 17:31:23.516 [Account Id=1, event=find account by id]  INFO   --- [           main] com.revature.controllers.UserController  : found savings account with id
+2021-03-25 17:31:23.520 []  INFO   --- [           main] com.revature.controllers.UserController  : org.hibernate.exception.JDBCConnectionException
+2021-03-25 17:31:23.524 [Account_id_2=2, Amount=50.0, Account_Id_1=1, event=Grant Access]  INFO   --- [           main] com.revature.controllers.UserController  : founds transfered
+2021-03-25 17:31:23.624 [event=insert customer, userid=1, employeeid=1]  INFO   --- [           main] com.revature.controllers.UserController  : customer info added
+2021-03-25 17:31:23.630 [event=insert employee, userid=1, employeeid=1]  INFO   --- [           main] com.revature.controllers.UserController  : employee info added
+2021-03-25 17:31:27.577 []  INFO 21080 --- [           main] c.r.SpringDataDemoApplicationTests       : Starting SpringDataDemoApplicationTests using Java 1.8.0_281 on DESKTOP-N43FAR2 with PID 21080 (started by FM in C:\project2\Team-42)
+2021-03-25 17:31:29.615 []  INFO 21080 --- [           main] c.r.SpringDataDemoApplicationTests       : No active profile set, falling back to default profiles: default
+2021-03-25 17:31:39.036 []  INFO 21080 --- [           main] c.r.SpringDataDemoApplicationTests       : Started SpringDataDemoApplicationTests in 13.937 seconds (JVM running for 21.122)
