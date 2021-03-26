@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.hibernate.exception.JDBCConnectionException;
 //import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,6 +72,16 @@ public class AccountServicesTest {
 		assertFalse(cAccnt.getU().get(0).isEmployee());
 
 	}
+	
+	@Test
+	public void findCheckingsAccountsByIdExceptionTest() {
+
+		when(checkingsAccountDAO.findById(1)).thenThrow(JDBCConnectionException.class);
+
+		// test
+		CheckingsAccount cAccnt = services.findCheckingsAccountsById(1);
+		assertNull(cAccnt);
+	}
 
 	@Test
 	public void findAllCheckingsAccountsTest() {
@@ -101,6 +112,18 @@ public class AccountServicesTest {
 		assertEquals(123, cAccnt.getBalance());
 		assertFalse(cAccnt.getU().get(0).isEmployee());
 	}
+	
+	@Test
+	public void findAllCheckingsAccountsExceptionTest() {
+
+		
+		when(checkingsAccountDAO.findAll()).thenThrow(JDBCConnectionException.class);
+
+		// test
+		Set<CheckingsAccount> cAccnts = services.findAllCheckingsAccounts();
+		assertNull(cAccnts);
+	}
+
 
 	@Test
 	public void insertCheckingAccountTest() {
@@ -173,6 +196,17 @@ public class AccountServicesTest {
 		assertEquals(123, sAccnt.getBalance());
 		assertFalse(sAccnt.getU().get(0).isEmployee());
 	}
+	
+	@Test
+	public void findAllSavingsAccountsExceptionTest() {
+
+		
+		when(savingsAccountDAO.findAll()).thenThrow(JDBCConnectionException.class);
+
+		// test
+		Set<SavingsAccount> cAccnts = services.findAllSavingsAccounts();
+		assertNull(cAccnts);
+	}
 
 	@Test
 	public void findSavingsAccountsByIdTest() {
@@ -199,6 +233,16 @@ public class AccountServicesTest {
 		assertEquals(123, sAccnt.getBalance());
 		assertFalse(sAccnt.getU().get(0).isEmployee());
 
+	}
+	
+	@Test
+	public void findSavingsAccountsByIdExceptionTest() {
+
+		when(savingsAccountDAO.findById(1)).thenThrow(JDBCConnectionException.class);
+
+		// test
+		SavingsAccount cAccnt = services.findSavingsAccountsById(1);
+		assertNull(cAccnt);
 	}
 
 	@Test
@@ -252,15 +296,12 @@ public class AccountServicesTest {
 		List<CheckingsAccount> Data2 = new ArrayList<CheckingsAccount>();
 		Data2.add(ca);
 		when(checkingsAccountDAO.findAll()).thenReturn(Data2);
-	//	when(checkingsAccountDAO.save(ca)).thenReturn(ca);
-		
+	
 		User user = new User();
 		user.setEmployee(false);
 		user.setPassword("password");
 		user.setUsername("user");
 		when(userDAO.findById(1)).thenReturn(Optional.of(user));
-		//when(userDAO.save(user)).thenReturn((user));
-		
 		
 		//test
 		assertNull(sa.getU());

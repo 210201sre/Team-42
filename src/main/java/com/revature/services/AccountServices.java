@@ -81,7 +81,7 @@ public class AccountServices {
 	}
 
 	public CheckingsAccount insert(CheckingsAccount e, int id) {
-		Optional<User> oU = null;
+		Optional<User> oU = Optional.empty();// change null to optional to prevent error in the get call 
 		jdbcCounter.increment(1);
 		try {
 			oU = userDAO.findById(id);
@@ -170,7 +170,7 @@ public class AccountServices {
 	}
 
 	public SavingsAccount insert(SavingsAccount e, int id) {
-		Optional<User> oU = null;
+		Optional<User> oU = Optional.empty();//change null to optional to prevent error in the get call
 		jdbcCounter.increment(1);
 		try {
 			oU = userDAO.findById(id);

@@ -165,7 +165,7 @@ public class PersonServicesTest {
 			assertEquals(2, tempC2.getId());
 			assertEquals("Bob", tempC2.getFirstName());
 			assertEquals("Jones", tempC2.getLastName());
-			
+		
 		}
 
 		@Test
@@ -183,7 +183,6 @@ public class PersonServicesTest {
 			c.setLastName("Parker");
 			when(customerDAO.save(c)).thenReturn(c); 
 			
-
 			// Test
 			Customer temp = services.insert(c, 1);
 			assertEquals(1, temp.getId());
