@@ -45,7 +45,7 @@ Team Banking is a banking application that leverages a postgresSQL DB hosted on 
 
 Use your EC2 URL to send HTTP requests to. Below are examples of URIs you can add to the end of your URL for requests, as well as details on the HTTP methods used and how to structure requests.
 
-  "GET" to to get all checking accounts
+  "GET" to get all checking accounts
   `/checkings_accounts`
   
   "GET" to get all checking accounts
