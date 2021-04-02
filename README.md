@@ -116,7 +116,7 @@ Use your EC2 URL to send HTTP requests to. Below are examples of URIs you can ad
 	"city":"flushing",
 	"streetAdress":"707 mex street",
 	"state":"ny",
-    "dateJoined":"null"
+    "dateJoined":"22/8/2020"
    }`
 
   "POST" to create a user
