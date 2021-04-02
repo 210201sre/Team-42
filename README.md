@@ -35,7 +35,7 @@ Team Banking is a banking application that leverages a postgresSQL DB hosted on 
 * Log4J
 * PostgreSQL
 * AWS RDS
-	* Grafana
+* Grafana
 * Loki
 * FluentD
 * REST
